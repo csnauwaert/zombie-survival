@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName = 'game.Launcher'
+
+repositories {
+	mavenCentral()
+}
+
+jar {
+	baseName = 'zombie_survival'
+	version = '0.1.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}

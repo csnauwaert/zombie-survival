@@ -1,5 +1,8 @@
 # dotfiles
 .*
 
+#tempfiles
+*~
+
 #build files
 /build/
