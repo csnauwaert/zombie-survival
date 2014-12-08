@@ -12,7 +12,7 @@ public class ControllerGreeting {
 	public String index(Model model) {
         // add a variable named "name" to the view-model:
 //        model.addAttribute("name", "World");
-        return "index";
+        return "home";
     } 
 
 }
