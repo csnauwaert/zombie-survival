@@ -1,10 +1,14 @@
-package game.Controllers;
+package org.kerwyn.game.controllers;
 
 import static org.junit.Assert.*;
-import game.Greeting;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kerwyn.game.Greeting;
+import org.kerwyn.game.controllers.JSONController;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class JSONControllerTest {
 
 	@Test
@@ -12,10 +16,7 @@ public class JSONControllerTest {
 
 		JSONController jsonController = new JSONController();
 		Greeting greeting = jsonController.testrpc("name");
-
-		assertEquals(1, greeting.getId());
 		assertEquals("name", greeting.getName());
-
 	}
 
 }

@@ -1,20 +1,17 @@
-package game.Controllers;
+package org.kerwyn.game.controllers;
 
-import game.Greeting;
-
+import org.kerwyn.game.Greeting;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class JSONController {
-	
-	private int counter = 0;
-	
+
 	@RequestMapping("/testrpc")
-    public Greeting testrpc(@RequestParam(value="name", required=false, defaultValue="") String name) {
-        counter += 1;
-        return new Greeting(counter,  ""+name);
-    }
+	public Greeting testrpc(
+			@RequestParam(value = "name", required = false, defaultValue = "") String name) {
+		return new Greeting(name);
+	}
 
 }

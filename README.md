@@ -1,7 +1,7 @@
 zombie-survival
 ===============
 
-a survival game developed between friends (see google doc for the game content)
+a survival org.kerwyn.game developed between friends (see google doc for the org.kerwyn.game content)
 
 HOW TO USE:
 -----------
