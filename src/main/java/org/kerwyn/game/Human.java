@@ -72,6 +72,7 @@ public class Human {
 	@OneToMany(targetEntity = Loot.class)
 	private Collection<Loot> loots;
 
+	/** The location times. */
 	@ManyToMany(targetEntity = LocationTime.class)
 	private Collection<LocationTime> locationTimes;
 
@@ -314,17 +315,25 @@ public class Human {
 	
 	
 
+	/**
+	 * Gets the location times.
+	 *
+	 * @return the location times
+	 */
 	public Collection<LocationTime> getLocationTimes() {
 		return locationTimes;
 	}
 
+	/**
+	 * Sets the location times.
+	 *
+	 * @param locationTimes the new location times
+	 */
 	public void setLocationTimes(Collection<LocationTime> locationTimes) {
 		this.locationTimes = locationTimes;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -335,7 +344,9 @@ public class Human {
 				+ ", timeBeforeReturn=" + timeBeforeReturn + ", awayJob="
 				+ awayJob + ", currentLocation=" + currentLocation
 				+ ", capacity=" + capacity + ", skills=" + skills + ", loots="
-				+ loots + "]";
+				+ loots + ", locationTimes=" + locationTimes + "]";
 	}
+
+
 
 }

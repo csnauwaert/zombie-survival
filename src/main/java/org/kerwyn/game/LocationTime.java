@@ -10,10 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class LocationTime.
  */
@@ -44,7 +42,7 @@ public class LocationTime {
 
 	/** The building. */
 	@ManyToMany(targetEntity = Building.class)
-	private Collection<Building> building;
+	private Collection<Building> buildings;
 
 	/** The humans. */
 	@ManyToMany(targetEntity = Human.class)
@@ -66,7 +64,8 @@ public class LocationTime {
 	/**
 	 * Sets the crew.
 	 *
-	 * @param crew the new crew
+	 * @param crew
+	 *            the new crew
 	 */
 	public void setCrew(Crew crew) {
 		this.crew = crew;
@@ -84,7 +83,8 @@ public class LocationTime {
 	/**
 	 * Sets the coordinate.
 	 *
-	 * @param coordinate the new coordinate
+	 * @param coordinate
+	 *            the new coordinate
 	 */
 	public void setCoordinate(String coordinate) {
 		this.coordinate = coordinate;
@@ -102,7 +102,8 @@ public class LocationTime {
 	/**
 	 * Sets the view.
 	 *
-	 * @param view the new view
+	 * @param view
+	 *            the new view
 	 */
 	public void setView(Date view) {
 		this.view = view;
@@ -120,7 +121,8 @@ public class LocationTime {
 	/**
 	 * Sets the loots.
 	 *
-	 * @param loots the new loots
+	 * @param loots
+	 *            the new loots
 	 */
 	public void setLoots(Collection<Loot> loots) {
 		this.loots = loots;
@@ -131,17 +133,18 @@ public class LocationTime {
 	 *
 	 * @return the building
 	 */
-	public Collection<Building> getBuilding() {
-		return building;
+	public Collection<Building> getBuildings() {
+		return buildings;
 	}
 
 	/**
 	 * Sets the building.
 	 *
-	 * @param building the new building
+	 * @param building
+	 *            the new building
 	 */
-	public void setBuilding(Collection<Building> building) {
-		this.building = building;
+	public void setBuilding(Collection<Building> buildings) {
+		this.buildings = buildings;
 	}
 
 	/**
@@ -156,7 +159,8 @@ public class LocationTime {
 	/**
 	 * Sets the humans.
 	 *
-	 * @param humans the new humans
+	 * @param humans
+	 *            the new humans
 	 */
 	public void setHumans(Collection<Human> humans) {
 		this.humans = humans;
@@ -174,7 +178,8 @@ public class LocationTime {
 	/**
 	 * Sets the zombies.
 	 *
-	 * @param zombies the new zombies
+	 * @param zombies
+	 *            the new zombies
 	 */
 	public void setZombies(Collection<Zombie> zombies) {
 		this.zombies = zombies;
@@ -189,14 +194,16 @@ public class LocationTime {
 		return id;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "LocationTime [id=" + id + ", crew=" + crew + ", coordinate="
 				+ coordinate + ", view=" + view + ", loots=" + loots
-				+ ", building=" + building + ", humans=" + humans
+				+ ", building=" + buildings + ", humans=" + humans
 				+ ", zombies=" + zombies + "]";
 	}
 
