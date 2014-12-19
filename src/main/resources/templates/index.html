@@ -1,30 +1,32 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Zombie Survivor</title>
+    <title>Zombie Survivor - Test</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="/lib/bootstrap-3.2.0-dist/css/bootstrap.min.css"></link>
-	<script type="application/javascript" src="/lib/jquery-2.1.0.min.js"></script>
-	<script type="application/javascript" src="/lib/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
-	<script type="application/javascript" src="/js/testrpc.js"></script>
-	<script type="application/javascript">
+    <link th:substituteby="@{home}::bootstrap_css"></link>
+    <link th:substituteby="@{home}::website_css"></link>
+    <script th:substituteby="@{home}::jquery_js"></script>
+    <script th:substituteby="@{home}::bootstrap_js"></script>
+    <script type="application/javascript" th:src="@{/js/testrpc.js}"></script>
+    <script type="application/javascript">
         $(function() {
-            org.kerwyn.game.init();
+            game.init();
         });
 </script>
 </head>
 <body>
-    <!-- <p th:text="'Hello, ' + ${name} + '!'" /> -->
     <div class="container">
-    	<row>
-    		<div class="col-md-4 col-md-offset-4">
-    			<p class="h1">Please try this button that will perform a rpc call</p>
-    			<input class="input_name_js" placeholder="enter your name here..."/>
-    			<button type="" class="testcall_rpc btn btn-primary">Perform RPC call</button>
-    			<p>You have clicked the button <strong class="number_clicked">46</strong> times</p>
-    			<p>The name you've entered is: <strong class="content"></strong></p>
-    		</div>
-    	</row>
+        <div th:substituteby="@{/home}::menu (menuitem='test')">
+        </div>
+        <row>
+            <div class="col-md-4 col-md-offset-4">
+                <p class="h1">Please try this button that will perform a rpc call</p>
+                <input class="input_name_js" placeholder="enter your name here..."/>
+                <button type="" class="testcall_rpc btn btn-primary">Perform RPC call</button>
+                <p>You have clicked the button <strong class="number_clicked">0</strong> times</p>
+                <p>The name you've entered is: <strong class="content"></strong></p>
+            </div>
+        </row>
     </div>
 </body>
 </html>

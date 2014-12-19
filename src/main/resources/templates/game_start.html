@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Zombie Survivor - Error</title>
+    <title>Zombie Survivor - Game</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link th:substituteby="@{home}::bootstrap_css"></link>
     <link th:substituteby="@{home}::website_css"></link>
@@ -10,17 +10,11 @@
 </head>
 <body>
     <div class="container">
-        <div th:substituteby="@{home}::menu (menuitem='error')">
+        <div th:substituteby="@{home}::menu (menuitem='game')">
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div>
-                There was an unexpected error (type=<span th:text="${error}">Bad</span>, status=<span th:text="${status}">500</span>).
-                </div>
-                <div th:text="${message}">Fake content</div>
-                <div>
-                    Please contact the operator with the above information.
-                </div>
+            <div class="col-md-12 text-center">
+                <h1>TODO: Create Game</h1>
             </div>
         </div>
     </div>

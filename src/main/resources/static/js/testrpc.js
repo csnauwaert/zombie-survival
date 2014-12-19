@@ -1,5 +1,5 @@
 (function(){
-    org.kerwyn.game = {
+    game = {
         init: function(){
             var self = this;
             $(document).ready(function(){

@@ -9,9 +9,10 @@ public class StaticPagesController extends WebMvcConfigurerAdapter {
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("index");
+		registry.addViewController("/").setViewName("home");
 		registry.addViewController("/login").setViewName("login");
 		registry.addViewController("/test").setViewName("index");
+		registry.addViewController("/game/start").setViewName("game_start");
 	}
 
 	

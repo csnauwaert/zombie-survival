@@ -1,25 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title th:text="${title}">Title</title>
-<link rel="stylesheet" th:href="@{/lib/bootstrap-3.2.0-dist/css/bootstrap.min.css}"
-	href="../../lib/bootstrap-3.2.0-dist/css/bootstrap.min.css" />
+    <title th:text="${webpage_title}">Zombie Survivor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:fragment="bootstrap_css" rel="stylesheet" type="text/css" th:href="@{/lib/bootstrap-3.2.0-dist/css/bootstrap.min.css}"></link>
+    <link th:fragment="website_css" rel="stylesheet" type="text/css" th:href="@{/css/website.css}"></link>
+    <script th:fragment="jquery_js" type="application/javascript" th:src="@{/lib/jquery-2.1.0.min.js}"></script>
+    <script th:fragment="bootstrap_js" type="application/javascript" th:src="@{/lib/bootstrap-3.2.0-dist/js/bootstrap.min.js}"></script>
 </head>
 <body>
-	<div class="container">
-		<div class="navbar">
-			<div class="navbar-inner">
-				<a class="brand" href="http://www.thymeleaf.org"> Thymeleaf -
-					Plain </a>
-				<ul class="nav">
-					<li><a th:href="@{/}" href="home.html"> Home </a></li>
-					<li><a th:href="@{/test}" href="index.html"> Test RPC call </a></li>
-					<li><a th:href="@{/login?logout}" href="logout"> Logout </a></li>
-				</ul>
-			</div>
-		</div>
-		<h1 th:text="${title}">Title</h1>
-		<div th:text="${message}">Fake content</div>
-	</div>
+    <div class="container">
+
+        <div th:fragment="menu (menuitem)" class="navbar navbar-inverse" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                <a class="navbar-brand menu_brand" th:href="@{/}" href="home.html">
+                    <img alt="Kerwyn Game Corp" class="menu_brand" th:src="@{/img/K.jpg}"/>
+                </a>
+                </div>
+                <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li th:class="${menuitem == null} ? 'active':''"><a th:href="@{/}" href="home.html"> Home </a></li>
+                    <li th:class="${menuitem == 'test'} ? 'active':''"><a th:href="@{/test}" href="index.html"> Test RPC call </a></li>
+                    <li th:class="${menuitem == 'game'} ? 'active':''"><a th:href="@{/game/start}" href="game_start.html"> Play game </a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"><a th:href="@{/logout}" href="logout"> Logout </a></li>
+                    <li sec:authorize="isAnonymous()" th:class="${menuitem == 'login'} ? 'active':''"><a th:href="@{/login}" href="login"> Login </a></li>
+                </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">Welcome <span sec:authentication="name"></span></h1>
+                <h1 sec:authorize="isAnonymous()">Welcome anonymous</h1>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
