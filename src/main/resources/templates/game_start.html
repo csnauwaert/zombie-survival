@@ -3,14 +3,14 @@
 <head>
     <title>Zombie Survivor - Game</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link th:substituteby="@{home}::bootstrap_css"></link>
-    <link th:substituteby="@{home}::website_css"></link>
-    <script th:substituteby="@{home}::jquery_js"></script>
-    <script th:substituteby="@{home}::bootstrap_js"></script>
+    <link th:replace="@{home}::bootstrap_css"></link>
+    <link th:replace="@{home}::website_css"></link>
+    <script th:replace="@{home}::jquery_js"></script>
+    <script th:replace="@{home}::bootstrap_js"></script>
 </head>
 <body>
-    <div class="container">
-        <div th:substituteby="@{home}::menu (menuitem='game')">
+    <div class="container main-container">
+        <div th:replace="@{home}::menu (menuitem='game')">
         </div>
         <div class="row">
             <div class="col-md-12 text-center">

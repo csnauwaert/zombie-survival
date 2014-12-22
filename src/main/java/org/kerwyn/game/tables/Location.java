@@ -1,7 +1,6 @@
-package org.kerwyn.game;
+package org.kerwyn.game.tables;
 
 import java.util.Collection;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,66 +9,41 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 /**
- * The Class LocationTime.
+ * The Class Location.
  */
 @Entity
-@Table(name = "LOCATION_TIME")
-public class LocationTime {
-
+@Table(name="LOCATIONS")
+public class Location {
+	
 	/** The id. */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
-
-	/** The crew. */
-	@ManyToOne(targetEntity = Crew.class)
-	private Crew crew;
-
+	
 	/** The coordinate. */
 	@Column
 	private String coordinate;
-
-	/** The view. */
-	@Column
-	private Date view;
-
+	
 	/** The loots. */
 	@ManyToMany(targetEntity = Loot.class)
 	private Collection<Loot> loots;
 
 	/** The building. */
-	@ManyToMany(targetEntity = Building.class)
-	private Collection<Building> buildings;
+	@ManyToOne(targetEntity = Building.class)
+	private Building building;
 
 	/** The humans. */
-	@ManyToMany(targetEntity = Human.class)
+	@OneToMany(targetEntity = Human.class)
 	private Collection<Human> humans;
 
 	/** The zombies. */
-	@ManyToMany(targetEntity = Zombie.class)
+	@OneToMany(targetEntity = Zombie.class)
 	private Collection<Zombie> zombies;
-
-	/**
-	 * Gets the crew.
-	 *
-	 * @return the crew
-	 */
-	public Crew getCrew() {
-		return crew;
-	}
-
-	/**
-	 * Sets the crew.
-	 *
-	 * @param crew
-	 *            the new crew
-	 */
-	public void setCrew(Crew crew) {
-		this.crew = crew;
-	}
 
 	/**
 	 * Gets the coordinate.
@@ -83,30 +57,10 @@ public class LocationTime {
 	/**
 	 * Sets the coordinate.
 	 *
-	 * @param coordinate
-	 *            the new coordinate
+	 * @param coordinate the new coordinate
 	 */
 	public void setCoordinate(String coordinate) {
 		this.coordinate = coordinate;
-	}
-
-	/**
-	 * Gets the view.
-	 *
-	 * @return the view
-	 */
-	public Date getView() {
-		return view;
-	}
-
-	/**
-	 * Sets the view.
-	 *
-	 * @param view
-	 *            the new view
-	 */
-	public void setView(Date view) {
-		this.view = view;
 	}
 
 	/**
@@ -121,8 +75,7 @@ public class LocationTime {
 	/**
 	 * Sets the loots.
 	 *
-	 * @param loots
-	 *            the new loots
+	 * @param loots the new loots
 	 */
 	public void setLoots(Collection<Loot> loots) {
 		this.loots = loots;
@@ -133,18 +86,17 @@ public class LocationTime {
 	 *
 	 * @return the building
 	 */
-	public Collection<Building> getBuildings() {
-		return buildings;
+	public Building getBuilding() {
+		return building;
 	}
 
 	/**
 	 * Sets the building.
 	 *
-	 * @param building
-	 *            the new building
+	 * @param building the new building
 	 */
-	public void setBuilding(Collection<Building> buildings) {
-		this.buildings = buildings;
+	public void setBuilding(Building building) {
+		this.building = building;
 	}
 
 	/**
@@ -159,8 +111,7 @@ public class LocationTime {
 	/**
 	 * Sets the humans.
 	 *
-	 * @param humans
-	 *            the new humans
+	 * @param humans the new humans
 	 */
 	public void setHumans(Collection<Human> humans) {
 		this.humans = humans;
@@ -178,8 +129,7 @@ public class LocationTime {
 	/**
 	 * Sets the zombies.
 	 *
-	 * @param zombies
-	 *            the new zombies
+	 * @param zombies the new zombies
 	 */
 	public void setZombies(Collection<Zombie> zombies) {
 		this.zombies = zombies;
@@ -194,17 +144,18 @@ public class LocationTime {
 		return id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "LocationTime [id=" + id + ", crew=" + crew + ", coordinate="
-				+ coordinate + ", view=" + view + ", loots=" + loots
-				+ ", building=" + buildings + ", humans=" + humans
+		return "Location [id=" + id + ", coordinate=" + coordinate + ", loots="
+				+ loots + ", building=" + building + ", humans=" + humans
 				+ ", zombies=" + zombies + "]";
 	}
+	
+	
+	
+	
 
 }

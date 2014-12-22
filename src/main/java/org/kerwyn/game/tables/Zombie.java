@@ -1,4 +1,4 @@
-package org.kerwyn.game;
+package org.kerwyn.game.tables;
 
 import java.util.Collection;
 
@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 /**
  * The Class Zombie.

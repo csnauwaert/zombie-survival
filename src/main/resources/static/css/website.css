@@ -1,3 +1,17 @@
 .menu_brand{
 	padding: 0px 0px 10px 5px;
 }
+.navbar.navbar-inverse{
+	margin-right: -15px;
+	margin-left: -15px;
+}
+body{
+	background-image: url(/img/background.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	color: snow;
+}
+.main-container{
+	background-color: rgba(0, 0, 0, 0.6);
+}
