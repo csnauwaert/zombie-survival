@@ -1,31 +1,19 @@
 package org.kerwyn.game.tables;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.kerwyn.game.AuthentificationLevel;
 
-/**
- * The Class User.
- */
 @Entity
 @Table(name = "USERS")
 public class User {
 
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-
 	/** The login. */
+	@Id
 	@Column(nullable = false)
-	private final String login;
+	private final String username;
 
 	/** The password. */
 	@Column(nullable = false)
@@ -33,49 +21,25 @@ public class User {
 
 	/** The pseudo. */
 	@Column(nullable = false)
-	private final String pseudo;
-
-	/** The authentification level. */
-	@Column(nullable = false)
-	private final AuthentificationLevel authentificationLevel;
-
-	/** The session id. */
-	@Column(nullable = false)
-	private final String sessionId;
+	private final Boolean enabled;
 	
-	/** The user. */
-	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Crew.class)
-    private Crew crew;
+	protected User() {
+		this.username = "";
+		this.password = "";
+		this.enabled = false;
+	}
 	
 	/**
 	 * Instantiates a new user.
 	 *
-	 * @param newLogin            the new login
-	 * @param newPassword            the new password
-	 * @param newPseudo            the new pseudo
-	 * @param newAuthentificationLevel            the new authentification level
-	 * @param newSessionId            the new session id
-	 * @param newCrew the new crew
+	 * @param username            the new login
+	 * @param password            the new password
+	 * @param enabled            if user is active or not
 	 */
-	public User(final String newLogin, final String newPassword,
-			final String newPseudo,
-			final AuthentificationLevel newAuthentificationLevel,
-			final String newSessionId, final Crew newCrew) {
-		this.login = newLogin;
-		this.password = newPassword;
-		this.pseudo = newPseudo;
-		this.authentificationLevel = newAuthentificationLevel;
-		this.sessionId = newSessionId;
-		this.crew=newCrew;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
+	public User(final String username, final String password, final Boolean enabled) {
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
 	}
 
 	/**
@@ -83,8 +47,8 @@ public class User {
 	 *
 	 * @return the login
 	 */
-	public String getLogin() {
-		return login;
+	public String getUsername() {
+		return username;
 	}
 
 	/**
@@ -97,52 +61,23 @@ public class User {
 	}
 
 	/**
-	 * Gets the pseudo.
+	 * Gets enabled status.
 	 *
-	 * @return the pseudo
+	 * @return the active state
 	 */
-	public String getPseudo() {
-		return pseudo;
+	public Boolean getEnabled() {
+		return enabled;
 	}
 
-	/**
-	 * Gets the authentification level.
-	 *
-	 * @return the authentification level
-	 */
-	public AuthentificationLevel getAuthentificationLevel() {
-		return authentificationLevel;
-	}
-
-	/**
-	 * Gets the session id.
-	 *
-	 * @return the session id
-	 */
-	public String getSessionId() {
-		return sessionId;
-	}
 	
-	
-
-	/**
-	 * Gets the crew.
-	 *
-	 * @return the crew
-	 */
-	public Crew getCrew() {
-		return crew;
-	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", login=" + login + ", password=" + password
-				+ ", pseudo=" + pseudo + ", authentificationLevel="
-				+ authentificationLevel + ", sessionId=" + sessionId
-				+ ", crew=" + crew + "]";
+		return "User [username=" + username + ", password=" + password
+				+ ", enabled=" + enabled + "]";
 	}
 	
 

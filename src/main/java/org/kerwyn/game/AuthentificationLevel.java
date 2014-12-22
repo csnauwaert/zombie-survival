@@ -6,7 +6,7 @@ package org.kerwyn.game;
 public enum AuthentificationLevel {
 	
 	/** The user. */
-	USER,/** The admin. */
-ADMIN
+	ROLE_USER,/** The admin. */
+ROLE_ADMIN
 
 }

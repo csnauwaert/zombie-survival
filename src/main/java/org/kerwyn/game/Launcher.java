@@ -27,35 +27,6 @@ public class Launcher {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(
 				Launcher.class, args);
-		// GreetingRepository crudRepository = context
-		// .getBean(GreetingRepository.class);
-
-		// for (int i = 0; i < 10; i++) {
-		// crudRepository.save(new Greeting(i + ""));
-		// }
-
-		// Iterable<Greeting> iterable = crudRepository.findAll();
-
-		// for (Greeting greeting : iterable) {
-		//
-		// System.out.println(greeting);
-		//
-		// }
-/*
-		CrudRepository<Greeting, Long> crudRepository = context
-				.getBean(CrudRepository.class);
-		for (int i = 0; i < 10; i++) {
-			crudRepository.save(new Greeting(i + ""));
-		}
-
-		Iterable<Greeting> iterable = crudRepository.findAll();
-
-		for (Greeting greeting : iterable) {
-
-			System.out.println(greeting);
-
-		}
-*/
 	}
 
 	@Configuration

@@ -26,8 +26,8 @@ public class Crew {
 	private long id;
 
 	/** The user. */
-	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = User.class, orphanRemoval = true)
-	private User user;
+	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = User_temp.class, orphanRemoval = true)
+	private User_temp user;
 
 	/** The humans. */
 	@OneToMany(targetEntity = Human.class, fetch = FetchType.EAGER)
@@ -92,7 +92,7 @@ public class Crew {
 	 *
 	 * @return the user
 	 */
-	public User getUser() {
+	public User_temp getUser() {
 		return user;
 	}
 
