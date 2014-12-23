@@ -1,4 +1,4 @@
-package org.kerwyn.game.tables;
+package org.kerwyn.game.entities;
 
 import java.util.Collection;
 
@@ -18,12 +18,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "HUMANS")
-public class Human {
+public class Human implements Being {
 
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	/** The name. */
 	@Column(nullable = false)
@@ -310,7 +310,7 @@ public class Human {
 	 *
 	 * @return the id
 	 */
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	

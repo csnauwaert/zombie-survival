@@ -1,4 +1,4 @@
-package org.kerwyn.game.tables;
+package org.kerwyn.game.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

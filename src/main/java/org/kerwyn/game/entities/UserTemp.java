@@ -1,4 +1,4 @@
-package org.kerwyn.game.tables;
+package org.kerwyn.game.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +16,7 @@ import org.kerwyn.game.AuthentificationLevel;
  */
 @Entity
 @Table(name = "USERS_TEMP")
-public class User_temp {
+public class UserTemp {
 
 	/** The id. */
 	@Id
@@ -57,7 +57,7 @@ public class User_temp {
 	 * @param newSessionId            the new session id
 	 * @param newCrew the new crew
 	 */
-	public User_temp(final String newLogin, final String newPassword,
+	public UserTemp(final String newLogin, final String newPassword,
 			final String newPseudo,
 			final AuthentificationLevel newAuthentificationLevel,
 			final String newSessionId, final Crew newCrew) {

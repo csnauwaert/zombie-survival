@@ -1,4 +1,4 @@
-package org.kerwyn.game.tables;
+package org.kerwyn.game.entities;
 
 import java.util.Collection;
 
@@ -11,18 +11,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 /**
  * The Class Zombie.
  */
 @Entity
 @Table(name = "ZOMBIES")
-public class Zombie {
+public class Zombie implements Being {
 
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	/** The location. */
 	@ManyToOne(targetEntity = Location.class)
@@ -48,7 +47,8 @@ public class Zombie {
 	/**
 	 * Sets the location.
 	 *
-	 * @param location the new location
+	 * @param location
+	 *            the new location
 	 */
 	public void setLocation(Location location) {
 		this.location = location;
@@ -66,7 +66,8 @@ public class Zombie {
 	/**
 	 * Sets the number.
 	 *
-	 * @param number the new number
+	 * @param number
+	 *            the new number
 	 */
 	public void setNumber(Integer number) {
 		this.number = number;
@@ -84,7 +85,8 @@ public class Zombie {
 	/**
 	 * Sets the location time.
 	 *
-	 * @param locationTimes the new location time
+	 * @param locationTimes
+	 *            the new location time
 	 */
 	public void setLocationTime(Collection<LocationTime> locationTimes) {
 		this.locationTimes = locationTimes;
@@ -95,11 +97,13 @@ public class Zombie {
 	 *
 	 * @return the id
 	 */
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -107,7 +111,5 @@ public class Zombie {
 		return "Zombie [id=" + id + ", location=" + location + ", number="
 				+ number + ", locationTimes=" + locationTimes + "]";
 	}
-	
-	
 
 }

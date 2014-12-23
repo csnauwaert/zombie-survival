@@ -1,4 +1,4 @@
-package org.kerwyn.game.tables;
+package org.kerwyn.game.entities;
 
 import java.util.Collection;
 
@@ -26,8 +26,8 @@ public class Crew {
 	private long id;
 
 	/** The user. */
-	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = User_temp.class, orphanRemoval = true)
-	private User_temp user;
+	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = UserTemp.class, orphanRemoval = true)
+	private UserTemp user;
 
 	/** The humans. */
 	@OneToMany(targetEntity = Human.class, fetch = FetchType.EAGER)
@@ -92,7 +92,7 @@ public class Crew {
 	 *
 	 * @return the user
 	 */
-	public User_temp getUser() {
+	public UserTemp getUser() {
 		return user;
 	}
 
