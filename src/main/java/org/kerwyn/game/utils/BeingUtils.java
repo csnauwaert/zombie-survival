@@ -1,12 +1,15 @@
 package org.kerwyn.game.utils;
 
 import org.kerwyn.game.entities.BeingType;
-import org.kerwyn.game.entities.UserTemp;
-import org.springframework.data.repository.CrudRepository;
+import org.kerwyn.game.repositories.UserTempRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BeingUtils {
 
-	private CrudRepository<UserTemp, Long> userTempRepository;
+	@Autowired
+	private UserTempRepository userTempRepository;
 
 	/**
 	 * Checks if is human.

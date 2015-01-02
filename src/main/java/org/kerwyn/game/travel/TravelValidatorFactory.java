@@ -1,12 +1,13 @@
 package org.kerwyn.game.travel;
 
 import org.kerwyn.game.entities.BeingType;
+import org.springframework.stereotype.Component;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for creating TravelValidator objects.
  */
-public class TravelValidatorFactory {
+@Component
+public class TravelValidatorFactory implements TravelValidatorProxy {
 
 	/**
 	 * Gets the single instance of TravelValidatorFactory.

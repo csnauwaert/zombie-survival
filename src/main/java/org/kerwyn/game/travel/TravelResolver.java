@@ -6,7 +6,7 @@ package org.kerwyn.game.travel;
 public interface TravelResolver {
 
 	/**
-	 * Resolve.
+	 * Resolve the location, and update fields in database if needed...
 	 *
 	 * @param destination
 	 *            the destination
