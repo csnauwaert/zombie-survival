@@ -13,6 +13,7 @@ public class StaticPagesController extends WebMvcConfigurerAdapter {
 		registry.addViewController("/login").setViewName("login");
 		registry.addViewController("/test").setViewName("index");
 		registry.addViewController("/game/start").setViewName("game_start");
+		registry.addViewController("/create_user").setViewName("create_user");
 	}
 
 	

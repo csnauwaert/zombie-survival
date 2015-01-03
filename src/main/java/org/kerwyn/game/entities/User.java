@@ -2,6 +2,8 @@ package org.kerwyn.game.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,23 +12,24 @@ import javax.persistence.Table;
 @Table(name = "USERS")
 public class User {
 
-	/** The login. */
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	/** The login. */
+	
 	@Column(nullable = false)
-	private final String username;
+	private String username;
 
 	/** The password. */
 	@Column(nullable = false)
-	private final String password;
+	private String password;
 
 	/** The pseudo. */
 	@Column(nullable = false)
-	private final Boolean enabled;
+	private Boolean enabled;
 	
-	protected User() {
-		this.username = "";
-		this.password = "";
-		this.enabled = false;
+	public User() {
 	}
 	
 	/**
@@ -76,7 +79,7 @@ public class User {
 	 */
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password
+		return "User [id=" + id + ", username=" + username + ", password=" + password
 				+ ", enabled=" + enabled + "]";
 	}
 	

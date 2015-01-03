@@ -7,6 +7,7 @@
     <link th:replace="@{home}::website_css"></link>
     <script th:replace="@{home}::jquery_js"></script>
     <script th:replace="@{home}::bootstrap_js"></script>
+    <script th:replace="@{home}::jquery_cookie_js"></script>
 </head>
 <body>
     <div class="container main-container">
@@ -14,16 +15,15 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-            <p th:if="${param.error}" class="alert alert-error">Invalid Login/Password, please try again</p>
+            <div th:if="${param.error}" class="alert alert-error">Invalid Login/Password, please try again</div>
             <h2>Enter your Login and Password</h2>
             <form name="form" th:action="@{/login}" action="/login" method="POST">
-                <fieldset>
-                    <input type="text" name="username" value="" placeholder="Login" />
-                    <input type="password" name="password" placeholder="Password" />
-                </fieldset>
+                <input type="text" name="username" value="" placeholder="Login" />
+                <input type="password" name="password" placeholder="Password" />
                 <input type="submit" id="login" value="Login"
                     class="btn btn-primary" />
             </form>
+            <div><a th:href="@{create_user}">Create new account</a></div>
             </div>
         </div>
     </div>

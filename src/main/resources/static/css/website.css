@@ -13,8 +13,11 @@ body{
 	color: snow;
 }
 .main-container{
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.65);
 }
 input{
 	background-color: transparent;
+}
+input.invalid{
+	border-color: red;
 }

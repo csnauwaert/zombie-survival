@@ -7,6 +7,7 @@
     <link th:fragment="website_css" rel="stylesheet" type="text/css" th:href="@{/css/website.css}"></link>
     <script th:fragment="jquery_js" type="application/javascript" th:src="@{/lib/jquery-2.1.0.min.js}"></script>
     <script th:fragment="bootstrap_js" type="application/javascript" th:src="@{/lib/bootstrap-3.2.0-dist/js/bootstrap.min.js}"></script>
+    <script th:fragment="jquery_cookie_js" type="application/javascript" th:src="@{/lib/jquery.cookie.js}"></script>
 </head>
 <body>
     <div class="container main-container">
@@ -21,7 +22,6 @@
                 <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li th:class="${menuitem == null} ? 'active':''"><a th:href="@{/}" href="home.html"> Home </a></li>
-                    <li th:class="${menuitem == 'test'} ? 'active':''"><a th:href="@{/test}" href="index.html"> Test RPC call </a></li>
                     <li th:class="${menuitem == 'game'} ? 'active':''"><a th:href="@{/game/start}" href="game_start.html"> Play game </a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -33,8 +33,11 @@
         </div>
         <div class="row">
             <div class="col-md-12 text-center">
-                <h1 sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">Welcome <span sec:authentication="name"></span></h1>
-                <h1 sec:authorize="isAnonymous()">Welcome anonymous</h1>
+                <h1 sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">Welcome <span sec:authentication="name"></span> !</h1>
+                <h1 sec:authorize="isAnonymous()">Welcome anonymous !</h1>
+            </div>
+            <div sec:authorize="isAnonymous()" class="col-md-12 text-center">
+                <a th:href="@{/login}" href="login">Log in</a> or <a th:href="@{/create_user}" href="create_user">Create new account</a>
             </div>
         </div>
     </div>
