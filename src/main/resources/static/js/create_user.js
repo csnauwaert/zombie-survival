@@ -1,5 +1,6 @@
 (function(){
     $(document).ready(function(){
+        $('input[name=username]').focus();
         $('#create_user').submit(function(){
             $('#login_already_taken').addClass('hidden');
             $('#invalid_field').addClass('hidden');

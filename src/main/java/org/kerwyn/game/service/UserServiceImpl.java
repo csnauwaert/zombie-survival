@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User save(User user) {
 		User existing_user = userRepository.findOneByUsername(user.getUsername());
-		if (existing_user != null) {
+		if (existing_user != null || user.getUsername() == "" || user.getPassword() == "") {
             throw new UserAlreadyExistsException(
                     String.format("There already exists a user with username=%s", user.getUsername()));
         }

@@ -8,6 +8,11 @@
     <script th:replace="@{home}::jquery_js"></script>
     <script th:replace="@{home}::bootstrap_js"></script>
     <script th:replace="@{home}::jquery_cookie_js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('input[name=username]').focus();
+        });
+    </script>
 </head>
 <body>
     <div class="container main-container">
