@@ -3,12 +3,12 @@ package org.kerwyn.game.entities;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 
 // TODO: Auto-generated Javadoc
 /**
@@ -22,9 +22,9 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	/** The login. */
-	
+
 	@Column(nullable = false)
 	private String username;
 
@@ -35,31 +35,32 @@ public class User {
 	/** The pseudo. */
 	@Column(nullable = false)
 	private Boolean enabled;
-	
+
 	/** The pseudo. */
 	@Column(nullable = false)
 	private String pseudo;
-	
-	/** The user. */
-	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Crew.class)
-    private Crew crew;
-	
-	
-	
+
+	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Crew.class, fetch = FetchType.LAZY)
+	private Crew crew;
+
 	/**
 	 * Instantiates a new user.
 	 */
 	public User() {
 	}
-	
+
 	/**
 	 * Instantiates a new user.
 	 *
-	 * @param username            the new login
-	 * @param password            the new password
-	 * @param enabled            if user is active or not
+	 * @param username
+	 *            the new login
+	 * @param password
+	 *            the new password
+	 * @param enabled
+	 *            if user is active or not
 	 */
-	public User(final String username, final String password, final Boolean enabled) {
+	public User(final String username, final String password,
+			final Boolean enabled) {
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
@@ -91,7 +92,7 @@ public class User {
 	public Boolean getEnabled() {
 		return enabled;
 	}
-	
+
 	/**
 	 * Gets the id.
 	 *
@@ -100,7 +101,7 @@ public class User {
 	public Long getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Gets the pseudo.
 	 *
@@ -113,7 +114,8 @@ public class User {
 	/**
 	 * Sets the pseudo.
 	 *
-	 * @param pseudo the new pseudo
+	 * @param pseudo
+	 *            the new pseudo
 	 */
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
@@ -131,7 +133,8 @@ public class User {
 	/**
 	 * Sets the crew.
 	 *
-	 * @param crew the new crew
+	 * @param crew
+	 *            the new crew
 	 */
 	public void setCrew(Crew crew) {
 		this.crew = crew;
@@ -140,7 +143,8 @@ public class User {
 	/**
 	 * Sets the id.
 	 *
-	 * @param id the new id
+	 * @param id
+	 *            the new id
 	 */
 	public void setId(Long id) {
 		this.id = id;
@@ -149,7 +153,8 @@ public class User {
 	/**
 	 * Sets the username.
 	 *
-	 * @param username the new username
+	 * @param username
+	 *            the new username
 	 */
 	public void setUsername(String username) {
 		this.username = username;
@@ -158,7 +163,8 @@ public class User {
 	/**
 	 * Sets the password.
 	 *
-	 * @param password the new password
+	 * @param password
+	 *            the new password
 	 */
 	public void setPassword(String password) {
 		this.password = password;
@@ -167,22 +173,22 @@ public class User {
 	/**
 	 * Sets the enabled.
 	 *
-	 * @param enabled the new enabled
+	 * @param enabled
+	 *            the new enabled
 	 */
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
-	
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password
-				+ ", enabled=" + enabled + "]";
+		return "User [id=" + id + ", username=" + username + ", password="
+				+ password + ", enabled=" + enabled + "]";
 	}
-	
-
 
 }

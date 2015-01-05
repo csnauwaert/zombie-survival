@@ -4,20 +4,21 @@ import javax.validation.constraints.NotNull;
 
 import org.kerwyn.game.entities.BeingType;
 import org.kerwyn.game.entities.User;
+import org.kerwyn.game.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BeingUtils.
+ */
 @Component
 public class BeingUtils {
-
-	@Autowired
-	private User user;
 
 	/**
 	 * Checks if is human.
 	 *
-	 * @param userId
-	 *            the user id
+	 * @param user the user
 	 * @return true, if is human
 	 */
 	public BeingType getBeingType(@NotNull final User user) {
