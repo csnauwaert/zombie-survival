@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class User.
  */
@@ -16,7 +15,6 @@ import javax.persistence.Table;
 @Table(name = "USERS")
 public class User {
 
-	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -34,9 +32,6 @@ public class User {
 	@Column(nullable = false)
 	private Boolean enabled;
 	
-	/**
-	 * Instantiates a new user.
-	 */
 	public User() {
 	}
 	

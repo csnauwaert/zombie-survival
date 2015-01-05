@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Zombie Survivor - Create User</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:replace="@{home}::bootstrap_css"></link>
+    <link th:replace="@{home}::website_css"></link>
+    <script th:replace="@{home}::jquery_js"></script>
+    <script th:replace="@{home}::bootstrap_js"></script>
+    <script th:replace="@{home}::jquery_cookie_js"></script>
+    <script type="application/javascript" th:src="@{/js/create_user.js}"></script>
+</head>
+<body>
+    <div class="container main-container">
+        <div th:replace="@{home}::menu (menuitem=null)">
+        </div>
+        <div th:unless="${param.success}" class="row">
+            <div class="col-md-12">
+            <h2>Create your account</h2>
+            <div id="login_already_taken" class="pull-left alert alert-danger hidden" role="alert">This account already exist, please choose another one</div>
+            <div id="invalid_field" class="pull-left alert alert-danger hidden" role="alert">Some fields are not valid, please fix them</div>
+            </div>
+        </div>
+        <div th:unless="${param.success}" class="row">
+            <div class="col-md-12">
+            <form id="create_user" th:action="@{/create_user?success}" action="/create_user?success" method="POST">
+                <input type="text" name="username" value="" placeholder="Login" />
+                <input type="password" name="password" placeholder="Password" />
+                <input type="submit" value="Create User"
+                    class="btn btn-primary" />
+                <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+            </form>
+            </div>
+        </div>
+        <div th:if="${param.success}" class="row">
+            <div class="col-md-12">
+                <div class="pull-left alert alert-success" role="alert">The account has been succesfully created</div>
+            </div>
+            <div class="col-md-12">
+                <a th:href="@{/}">Go back to home page</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

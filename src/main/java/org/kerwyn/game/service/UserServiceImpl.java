@@ -33,7 +33,9 @@ public class UserServiceImpl implements UserService {
 		}
 		authorityRepository
 				.save(new Authority(user.getUsername(), "ROLE_USER"));
-		return userRepository.save(user);
+
+		return userRepository.save(existing_user);
+
 	}
 
 }
