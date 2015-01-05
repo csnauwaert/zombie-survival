@@ -2,6 +2,8 @@ package org.kerwyn.game.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,19 +11,20 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "AUTHORITIES")
 public class Authority {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	/** The login. */
-	@Id
 	@Column(nullable = false)
-	private final String username;
+	private String username;
 
 	/** The password. */
 	@Column(nullable = false)
-	private final String authority;
+	private String authority;
 	
 	protected Authority() {
-		this.username = "";
-		this.authority = "";
 	}
 	
 	/**
@@ -58,7 +61,7 @@ public class Authority {
 	 */
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", authority=" + authority + "]";
+		return "User [id=" + id + ", username=" + username + ", authority=" + authority + "]";
 	}
 	
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
  * A factory for creating TravelValidator objects.
  */
 @Component
-public class TravelValidatorFactory implements TravelValidatorProxy {
+public class TravelValidatorFactory {
 
 	/**
 	 * Gets the single instance of TravelValidatorFactory.
