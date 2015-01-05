@@ -1,6 +1,7 @@
 package org.kerwyn.game.controllers;
 
 import org.kerwyn.game.entities.BeingType;
+import org.kerwyn.game.entities.User;
 import org.kerwyn.game.travel.TravelResolver;
 import org.kerwyn.game.travel.TravelResolverFactory;
 import org.kerwyn.game.travel.TravelValidator;
@@ -8,11 +9,14 @@ import org.kerwyn.game.travel.TravelValidatorException;
 import org.kerwyn.game.travel.TravelValidatorFactory;
 import org.kerwyn.game.utils.BeingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+// TODO: Auto-generated Javadoc
 /**
  * 
  * Controller which will calculate travel time from a point A to a point B
@@ -27,30 +31,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TravelController {
 
+	/** The travel validator factory. */
 	@Autowired
 	private TravelValidatorFactory travelValidatorFactory;
+	
+	/** The travel resolver factory. */
 	@Autowired
 	private TravelResolverFactory travelResolverFactory;
+	
+	/** The being utils. */
 	@Autowired
 	private BeingUtils beingUtils;
 
 	/**
 	 * Shift the character.
 	 *
-	 * @param userId
-	 *            the user id
-	 * @param location
-	 *            the location
+	 * @param beingId the being id
+	 * @param location            the location
 	 * @return the object
+	 * @throws TravelControllerException the travel controller exception
 	 */
-	@RequestMapping(value = "/travel", method = RequestMethod.GET)
+	@RequestMapping(value = "/game/travel", method = RequestMethod.POST)
 	public Float travel(
-			@RequestParam(value = "user", required = true) final Long userId,
 			@RequestParam(value = "being", required = true) final Long beingId,
 			@RequestParam(value = "location", required = true) final Integer location)
 			throws TravelControllerException {
 
-		final BeingType beingType = this.beingUtils.getBeingType(userId);
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
+		User current = (User) authentication.getPrincipal();
+
+		final BeingType beingType = this.beingUtils.getBeingType(current
+				.getId());
 		final TravelValidator validator = this.travelValidatorFactory
 				.getInstance(beingType);
 		final TravelResolver resolver = this.travelResolverFactory

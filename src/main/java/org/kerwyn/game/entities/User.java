@@ -8,10 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class User.
+ */
 @Entity
 @Table(name = "USERS")
 public class User {
 
+	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -29,6 +34,9 @@ public class User {
 	@Column(nullable = false)
 	private Boolean enabled;
 	
+	/**
+	 * Instantiates a new user.
+	 */
 	public User() {
 	}
 	
@@ -71,7 +79,15 @@ public class User {
 	public Boolean getEnabled() {
 		return enabled;
 	}
-
+	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
 	
 
 	/* (non-Javadoc)
