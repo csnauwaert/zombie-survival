@@ -12,7 +12,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
 /**
  * The Class Crew.
  */
@@ -26,8 +25,8 @@ public class Crew {
 	private long id;
 
 	/** The user. */
-	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = UserTemp.class, orphanRemoval = true)
-	private UserTemp user;
+	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = User.class, orphanRemoval = true)
+	private User user;
 
 	/** The humans. */
 	@OneToMany(targetEntity = Human.class, fetch = FetchType.EAGER)
@@ -92,7 +91,7 @@ public class Crew {
 	 *
 	 * @return the user
 	 */
-	public UserTemp getUser() {
+	public User getUser() {
 		return user;
 	}
 

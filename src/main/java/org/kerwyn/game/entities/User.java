@@ -1,13 +1,16 @@
 package org.kerwyn.game.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class User.
  */
@@ -15,6 +18,7 @@ import javax.persistence.Table;
 @Table(name = "USERS")
 public class User {
 
+	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,6 +36,19 @@ public class User {
 	@Column(nullable = false)
 	private Boolean enabled;
 	
+	/** The pseudo. */
+	@Column(nullable = false)
+	private String pseudo;
+	
+	/** The user. */
+	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Crew.class)
+    private Crew crew;
+	
+	
+	
+	/**
+	 * Instantiates a new user.
+	 */
 	public User() {
 	}
 	
@@ -82,6 +99,78 @@ public class User {
 	 */
 	public Long getId() {
 		return id;
+	}
+	
+	/**
+	 * Gets the pseudo.
+	 *
+	 * @return the pseudo
+	 */
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	/**
+	 * Sets the pseudo.
+	 *
+	 * @param pseudo the new pseudo
+	 */
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
+	/**
+	 * Gets the crew.
+	 *
+	 * @return the crew
+	 */
+	public Crew getCrew() {
+		return crew;
+	}
+
+	/**
+	 * Sets the crew.
+	 *
+	 * @param crew the new crew
+	 */
+	public void setCrew(Crew crew) {
+		this.crew = crew;
+	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * Sets the username.
+	 *
+	 * @param username the new username
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * Sets the password.
+	 *
+	 * @param password the new password
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * Sets the enabled.
+	 *
+	 * @param enabled the new enabled
+	 */
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 

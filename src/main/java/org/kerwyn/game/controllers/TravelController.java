@@ -34,11 +34,11 @@ public class TravelController {
 	/** The travel validator factory. */
 	@Autowired
 	private TravelValidatorFactory travelValidatorFactory;
-	
+
 	/** The travel resolver factory. */
 	@Autowired
 	private TravelResolverFactory travelResolverFactory;
-	
+
 	/** The being utils. */
 	@Autowired
 	private BeingUtils beingUtils;
@@ -46,10 +46,13 @@ public class TravelController {
 	/**
 	 * Shift the character.
 	 *
-	 * @param beingId the being id
-	 * @param location            the location
+	 * @param beingId
+	 *            the being id
+	 * @param location
+	 *            the location
 	 * @return the object
-	 * @throws TravelControllerException the travel controller exception
+	 * @throws TravelControllerException
+	 *             the travel controller exception
 	 */
 	@RequestMapping(value = "/game/travel", method = RequestMethod.POST)
 	public Float travel(
@@ -59,10 +62,9 @@ public class TravelController {
 
 		Authentication authentication = SecurityContextHolder.getContext()
 				.getAuthentication();
-		User current = (User) authentication.getPrincipal();
 
-		final BeingType beingType = this.beingUtils.getBeingType(current
-				.getId());
+		final BeingType beingType = this.beingUtils
+				.getBeingType((User) authentication.getPrincipal());
 		final TravelValidator validator = this.travelValidatorFactory
 				.getInstance(beingType);
 		final TravelResolver resolver = this.travelResolverFactory
