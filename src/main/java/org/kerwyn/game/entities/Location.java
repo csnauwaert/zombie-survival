@@ -1,6 +1,6 @@
 package org.kerwyn.game.entities;
 
-import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,58 +8,58 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
+// TODO: Auto-generated Javadoc
 /**
  * The Class Location.
  */
 @Entity
-@Table(name="LOCATIONS")
+@Table(name = "LOCATIONS")
 public class Location {
-	
+
 	/** The id. */
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	/** The coordinate. */
 	@Column
-	private String coordinate;
-	
+	private Integer coordinate;
+
 	/** The loots. */
 	@ManyToMany(targetEntity = Loot.class)
-	private Collection<Loot> loots;
+	private Set<Loot> loots;
 
 	/** The building. */
-	@ManyToOne(targetEntity = Building.class)
-	private Building building;
+	@ManyToMany(targetEntity = Building.class)
+	private Set<Building> buildings;
 
 	/** The humans. */
 	@OneToMany(targetEntity = Human.class)
-	private Collection<Human> humans;
+	private Set<Human> humans;
 
 	/** The zombies. */
 	@OneToMany(targetEntity = Zombie.class)
-	private Collection<Zombie> zombies;
+	private Set<Zombie> zombies;
 
 	/**
 	 * Gets the coordinate.
 	 *
 	 * @return the coordinate
 	 */
-	public String getCoordinate() {
+	public Integer getCoordinate() {
 		return coordinate;
 	}
 
 	/**
 	 * Sets the coordinate.
 	 *
-	 * @param coordinate the new coordinate
+	 * @param coordinate
+	 *            the new coordinate
 	 */
-	public void setCoordinate(String coordinate) {
+	public void setCoordinate(Integer coordinate) {
 		this.coordinate = coordinate;
 	}
 
@@ -68,16 +68,17 @@ public class Location {
 	 *
 	 * @return the loots
 	 */
-	public Collection<Loot> getLoots() {
+	public Set<Loot> getLoots() {
 		return loots;
 	}
 
 	/**
 	 * Sets the loots.
 	 *
-	 * @param loots the new loots
+	 * @param loots
+	 *            the new loots
 	 */
-	public void setLoots(Collection<Loot> loots) {
+	public void setLoots(Set<Loot> loots) {
 		this.loots = loots;
 	}
 
@@ -86,17 +87,18 @@ public class Location {
 	 *
 	 * @return the building
 	 */
-	public Building getBuilding() {
-		return building;
+	public Set<Building> getBuildings() {
+		return buildings;
 	}
 
 	/**
 	 * Sets the building.
 	 *
-	 * @param building the new building
+	 * @param building
+	 *            the new building
 	 */
-	public void setBuilding(Building building) {
-		this.building = building;
+	public void setBuildings(Set<Building> buildings) {
+		this.buildings = buildings;
 	}
 
 	/**
@@ -104,17 +106,42 @@ public class Location {
 	 *
 	 * @return the humans
 	 */
-	public Collection<Human> getHumans() {
+	public Set<Human> getHumans() {
 		return humans;
 	}
 
 	/**
 	 * Sets the humans.
 	 *
-	 * @param humans the new humans
+	 * @param humans
+	 *            the new humans
 	 */
-	public void setHumans(Collection<Human> humans) {
+	public void setHumans(Set<Human> humans) {
 		this.humans = humans;
+	}
+
+	/**
+	 * Adds the human.
+	 *
+	 * @param human
+	 *            the human
+	 * @return the human
+	 */
+	public Human addHuman(Human human) {
+		this.humans.add(human);
+		return human;
+	}
+
+	/**
+	 * Removes the human.
+	 *
+	 * @param human
+	 *            the human
+	 * @return the human
+	 */
+	public Human removeHuman(Human human) {
+		this.humans.remove(human);
+		return human;
 	}
 
 	/**
@@ -122,16 +149,17 @@ public class Location {
 	 *
 	 * @return the zombies
 	 */
-	public Collection<Zombie> getZombies() {
+	public Set<Zombie> getZombies() {
 		return zombies;
 	}
 
 	/**
 	 * Sets the zombies.
 	 *
-	 * @param zombies the new zombies
+	 * @param zombies
+	 *            the new zombies
 	 */
-	public void setZombies(Collection<Zombie> zombies) {
+	public void setZombies(Set<Zombie> zombies) {
 		this.zombies = zombies;
 	}
 
@@ -144,18 +172,16 @@ public class Location {
 		return id;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "Location [id=" + id + ", coordinate=" + coordinate + ", loots="
-				+ loots + ", building=" + building + ", humans=" + humans
+				+ loots + ", buildings=" + buildings + ", humans=" + humans
 				+ ", zombies=" + zombies + "]";
 	}
-	
-	
-	
-	
 
 }

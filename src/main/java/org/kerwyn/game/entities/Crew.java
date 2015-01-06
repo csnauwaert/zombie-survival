@@ -1,6 +1,7 @@
 package org.kerwyn.game.entities;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -30,14 +31,14 @@ public class Crew {
 
 	/** The humans. */
 	@OneToMany(targetEntity = Human.class, fetch = FetchType.EAGER)
-	private Collection<Human> humans;
+	private Set<Human> humans;
 
 	/** The location times. */
 	@OneToMany(targetEntity = LocationTime.class, fetch = FetchType.LAZY)
-	private Collection<LocationTime> locationTimes;
+	private Set<LocationTime> locationTimes;
 
 	@OneToMany(targetEntity = Loot.class)
-	private Collection<Loot> loots;
+	private Set<Loot> loots;
 
 	/**
 	 * Gets the humans.
@@ -54,7 +55,7 @@ public class Crew {
 	 * @param humans
 	 *            the new humans
 	 */
-	public void setHumans(Collection<Human> humans) {
+	public void setHumans(Set<Human> humans) {
 		this.humans = humans;
 	}
 
@@ -63,7 +64,7 @@ public class Crew {
 	 *
 	 * @return the location times
 	 */
-	public Collection<LocationTime> getLocationTimes() {
+	public Set<LocationTime> getLocationTimes() {
 		return locationTimes;
 	}
 
@@ -73,7 +74,7 @@ public class Crew {
 	 * @param locationTimes
 	 *            the new location times
 	 */
-	public void setLocationTimes(Collection<LocationTime> locationTimes) {
+	public void setLocationTimes(Set<LocationTime> locationTimes) {
 		this.locationTimes = locationTimes;
 	}
 

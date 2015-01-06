@@ -1,6 +1,6 @@
 package org.kerwyn.game.entities;
 
-import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +33,7 @@ public class Zombie implements Being {
 
 	/** The location times. */
 	@ManyToMany(targetEntity = LocationTime.class)
-	private Collection<LocationTime> locationTimes;
+	private Set<LocationTime> locationTimes;
 
 	/**
 	 * Gets the location.
@@ -78,7 +78,7 @@ public class Zombie implements Being {
 	 *
 	 * @return the location times
 	 */
-	public Collection<LocationTime> getLocationTimes() {
+	public Set<LocationTime> getLocationTimes() {
 		return locationTimes;
 	}
 
@@ -88,7 +88,7 @@ public class Zombie implements Being {
 	 * @param locationTimes
 	 *            the new location time
 	 */
-	public void setLocationTime(Collection<LocationTime> locationTimes) {
+	public void setLocationTime(Set<LocationTime> locationTimes) {
 		this.locationTimes = locationTimes;
 	}
 

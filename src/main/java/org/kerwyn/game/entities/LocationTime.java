@@ -2,6 +2,7 @@ package org.kerwyn.game.entities;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
+// TODO: Auto-generated Javadoc
 /**
  * The Class LocationTime.
  */
@@ -31,7 +32,7 @@ public class LocationTime {
 
 	/** The coordinate. */
 	@Column
-	private String coordinate;
+	private Integer coordinate;
 
 	/** The view. */
 	@Column
@@ -39,19 +40,53 @@ public class LocationTime {
 
 	/** The loots. */
 	@ManyToMany(targetEntity = Loot.class)
-	private Collection<Loot> loots;
+	private Set<Loot> loots;
 
 	/** The building. */
 	@ManyToMany(targetEntity = Building.class)
-	private Collection<Building> buildings;
+	private Set<Building> buildings;
 
 	/** The humans. */
 	@ManyToMany(targetEntity = Human.class)
-	private Collection<Human> humans;
+	private Set<Human> humans;
 
 	/** The zombies. */
 	@ManyToMany(targetEntity = Zombie.class)
-	private Collection<Zombie> zombies;
+	private Set<Zombie> zombies;
+	
+
+	/**
+	 * Instantiates a new location time.
+	 */
+	public LocationTime() {
+	}
+	
+	
+	
+	/**
+	 * Instantiates a new location time.
+	 *
+	 * @param crew the crew
+	 * @param coordinate the coordinate
+	 * @param view the view
+	 * @param loots the loots
+	 * @param buildings the buildings
+	 * @param humans the humans
+	 * @param zombies the zombies
+	 */
+	public LocationTime(Crew crew, Integer coordinate, Date view,
+			Set<Loot> loots, Set<Building> buildings, Set<Human> humans,
+			Set<Zombie> zombies) {
+		this.crew = crew;
+		this.coordinate = coordinate;
+		this.view = view;
+		this.loots = loots;
+		this.buildings = buildings;
+		this.humans = humans;
+		this.zombies = zombies;
+	}
+
+
 
 	/**
 	 * Gets the crew.
@@ -77,7 +112,7 @@ public class LocationTime {
 	 *
 	 * @return the coordinate
 	 */
-	public String getCoordinate() {
+	public Integer getCoordinate() {
 		return coordinate;
 	}
 
@@ -87,7 +122,7 @@ public class LocationTime {
 	 * @param coordinate
 	 *            the new coordinate
 	 */
-	public void setCoordinate(String coordinate) {
+	public void setCoordinate(Integer coordinate) {
 		this.coordinate = coordinate;
 	}
 
@@ -125,7 +160,7 @@ public class LocationTime {
 	 * @param loots
 	 *            the new loots
 	 */
-	public void setLoots(Collection<Loot> loots) {
+	public void setLoots(Set<Loot> loots) {
 		this.loots = loots;
 	}
 
@@ -134,17 +169,16 @@ public class LocationTime {
 	 *
 	 * @return the building
 	 */
-	public Collection<Building> getBuildings() {
+	public Set<Building> getBuildings() {
 		return buildings;
 	}
 
 	/**
 	 * Sets the building.
 	 *
-	 * @param building
-	 *            the new building
+	 * @param buildings the new building
 	 */
-	public void setBuilding(Collection<Building> buildings) {
+	public void setBuilding(Set<Building> buildings) {
 		this.buildings = buildings;
 	}
 
@@ -153,7 +187,7 @@ public class LocationTime {
 	 *
 	 * @return the humans
 	 */
-	public Collection<Human> getHumans() {
+	public Set<Human> getHumans() {
 		return humans;
 	}
 
@@ -163,7 +197,7 @@ public class LocationTime {
 	 * @param humans
 	 *            the new humans
 	 */
-	public void setHumans(Collection<Human> humans) {
+	public void setHumans(Set<Human> humans) {
 		this.humans = humans;
 	}
 
@@ -172,7 +206,7 @@ public class LocationTime {
 	 *
 	 * @return the zombies
 	 */
-	public Collection<Zombie> getZombies() {
+	public Set<Zombie> getZombies() {
 		return zombies;
 	}
 
@@ -182,7 +216,7 @@ public class LocationTime {
 	 * @param zombies
 	 *            the new zombies
 	 */
-	public void setZombies(Collection<Zombie> zombies) {
+	public void setZombies(Set<Zombie> zombies) {
 		this.zombies = zombies;
 	}
 

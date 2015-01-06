@@ -1,6 +1,6 @@
 package org.kerwyn.game.entities;
 
-import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,42 +12,41 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 /**
  * The Class Building.
  */
 @Entity
-@Table(name="BUILDINGS")
+@Table(name = "BUILDINGS")
 public class Building {
-	
+
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	/** The name. */
 	@Column
 	private String name;
-	
+
 	/** The owner. */
-	@ManyToOne(targetEntity=Crew.class)
+	@ManyToOne(targetEntity = Crew.class)
 	private Crew owner;
-	
+
 	/** The defense value. */
 	@Column
 	private Float defenseValue;
-	
+
 	/** The number. */
 	@Column
 	private Integer number;
-	
+
 	/** The locations. */
-	@ManyToMany(targetEntity=Location.class)
-	private Collection<Location> locations;
-	
+	@ManyToMany(targetEntity = Location.class)
+	private Set<Location> locations;
+
 	/** The locations history. */
-	@OneToMany(targetEntity=LocationTime.class)
-	private Collection<LocationTime> locationsHistory;
+	@OneToMany(targetEntity = LocationTime.class)
+	private Set<LocationTime> locationsHistory;
 
 	/**
 	 * Gets the name.
@@ -61,7 +60,8 @@ public class Building {
 	/**
 	 * Sets the name.
 	 *
-	 * @param name the new name
+	 * @param name
+	 *            the new name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -79,7 +79,8 @@ public class Building {
 	/**
 	 * Sets the owner.
 	 *
-	 * @param owner the new owner
+	 * @param owner
+	 *            the new owner
 	 */
 	public void setOwner(Crew owner) {
 		this.owner = owner;
@@ -97,7 +98,8 @@ public class Building {
 	/**
 	 * Sets the defense value.
 	 *
-	 * @param defenseValue the new defense value
+	 * @param defenseValue
+	 *            the new defense value
 	 */
 	public void setDefenseValue(Float defenseValue) {
 		this.defenseValue = defenseValue;
@@ -115,7 +117,8 @@ public class Building {
 	/**
 	 * Sets the number.
 	 *
-	 * @param number the new number
+	 * @param number
+	 *            the new number
 	 */
 	public void setNumber(Integer number) {
 		this.number = number;
@@ -126,16 +129,17 @@ public class Building {
 	 *
 	 * @return the locations
 	 */
-	public Collection<Location> getLocations() {
+	public Set<Location> getLocations() {
 		return locations;
 	}
 
 	/**
 	 * Sets the locations.
 	 *
-	 * @param locations the new locations
+	 * @param locations
+	 *            the new locations
 	 */
-	public void setLocations(Collection<Location> locations) {
+	public void setLocations(Set<Location> locations) {
 		this.locations = locations;
 	}
 
@@ -153,20 +157,23 @@ public class Building {
 	 *
 	 * @return the locations history
 	 */
-	public Collection<LocationTime> getLocationsHistory() {
+	public Set<LocationTime> getLocationsHistory() {
 		return locationsHistory;
 	}
 
 	/**
 	 * Sets the locations history.
 	 *
-	 * @param locationsHistory the new locations history
+	 * @param locationsHistory
+	 *            the new locations history
 	 */
-	public void setLocationsHistory(Collection<LocationTime> locationsHistory) {
+	public void setLocationsHistory(Set<LocationTime> locationsHistory) {
 		this.locationsHistory = locationsHistory;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -176,8 +183,5 @@ public class Building {
 				+ ", locations=" + locations + ", locationsHistory="
 				+ locationsHistory + "]";
 	}
-	
-	
 
-	
 }

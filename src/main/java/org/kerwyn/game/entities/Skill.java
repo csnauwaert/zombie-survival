@@ -1,6 +1,7 @@
 package org.kerwyn.game.entities;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
 
 /**
  * The Class Skill.
@@ -29,7 +29,7 @@ public class Skill {
 
 	/** The humans. */
 	@ManyToMany(targetEntity = Human.class)
-	private Collection<Human> humans;
+	private Set<Human> humans;
 
 	/**
 	 * Gets the name.
@@ -43,7 +43,8 @@ public class Skill {
 	/**
 	 * Sets the name.
 	 *
-	 * @param name the new name
+	 * @param name
+	 *            the new name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -61,9 +62,10 @@ public class Skill {
 	/**
 	 * Sets the humans.
 	 *
-	 * @param humans the new humans
+	 * @param humans
+	 *            the new humans
 	 */
-	public void setHumans(Collection<Human> humans) {
+	public void setHumans(Set<Human> humans) {
 		this.humans = humans;
 	}
 
@@ -76,7 +78,9 @@ public class Skill {
 		return id;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -84,6 +88,5 @@ public class Skill {
 		return "Skill [id=" + id + ", name=" + name + ", humans=" + humans
 				+ "]";
 	}
-	
 
 }

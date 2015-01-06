@@ -1,6 +1,7 @@
 package org.kerwyn.game.entities;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
+// TODO: Auto-generated Javadoc
 /**
  * The Class Human.
  */
@@ -67,15 +68,15 @@ public class Human implements Being {
 
 	/** The skills. */
 	@OneToMany(targetEntity = Skill.class)
-	private Collection<Skill> skills;
+	private Set<Skill> skills;
 
 	/** The loots. */
 	@OneToMany(targetEntity = Loot.class)
-	private Collection<Loot> loots;
+	private Set<Loot> loots;
 
 	/** The location times. */
 	@ManyToMany(targetEntity = LocationTime.class)
-	private Collection<LocationTime> locationTimes;
+	private Set<LocationTime> locationTimes;
 
 	/**
 	 * Gets the name.
@@ -272,7 +273,7 @@ public class Human implements Being {
 	 *
 	 * @return the skills
 	 */
-	public Collection<Skill> getSkills() {
+	public Set<Skill> getSkills() {
 		return skills;
 	}
 
@@ -282,7 +283,7 @@ public class Human implements Being {
 	 * @param skills
 	 *            the new skills
 	 */
-	public void setSkills(Collection<Skill> skills) {
+	public void setSkills(Set<Skill> skills) {
 		this.skills = skills;
 	}
 
@@ -301,7 +302,7 @@ public class Human implements Being {
 	 * @param loots
 	 *            the new loots
 	 */
-	public void setLoots(Collection<Loot> loots) {
+	public void setLoots(Set<Loot> loots) {
 		this.loots = loots;
 	}
 
@@ -313,28 +314,41 @@ public class Human implements Being {
 	public Long getId() {
 		return id;
 	}
-	
-	
 
 	/**
 	 * Gets the location times.
 	 *
 	 * @return the location times
 	 */
-	public Collection<LocationTime> getLocationTimes() {
+	public Set<LocationTime> getLocationTimes() {
 		return locationTimes;
 	}
 
 	/**
 	 * Sets the location times.
 	 *
-	 * @param locationTimes the new location times
+	 * @param locationTimes
+	 *            the new location times
 	 */
-	public void setLocationTimes(Collection<LocationTime> locationTimes) {
+	public void setLocationTimes(Set<LocationTime> locationTimes) {
 		this.locationTimes = locationTimes;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Adds the location times.
+	 *
+	 * @param locationTime
+	 *            the location time
+	 * @return the location time
+	 */
+	public LocationTime addLocationTimes(LocationTime locationTime) {
+		this.locationTimes.add(locationTime);
+		return locationTime;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -348,6 +362,39 @@ public class Human implements Being {
 				+ loots + ", locationTimes=" + locationTimes + "]";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Human other = (Human) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 
 }

@@ -1,6 +1,6 @@
 package org.kerwyn.game.entities;
 
-import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,27 +10,26 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 /**
  * The Class Job.
  */
 @Entity
-@Table(name="JOBS")
+@Table(name = "JOBS")
 public class Job {
-	
+
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	/** The name. */
 	@Column
 	private String name;
-	
+
 	/** The humans. */
-	@OneToMany(targetEntity=Human.class)
-	private Collection<Human> humans;
-	
+	@OneToMany(targetEntity = Human.class)
+	private Set<Human> humans;
+
 	/** The base time. */
 	@Column
 	private Float baseTime;
@@ -38,14 +37,14 @@ public class Job {
 	/** The base chance success. */
 	@Column
 	private Float baseChanceSuccess;
-	
+
 	/** The base chance encounter. */
 	@Column
 	private Float baseChanceEncounter;
-	
+
 	/** The loot. */
-	@OneToMany(targetEntity=Loot.class)
-	private Collection<Loot> loot;
+	@OneToMany(targetEntity = Loot.class)
+	private Set<Loot> loot;
 
 	/**
 	 * Gets the name.
@@ -59,7 +58,8 @@ public class Job {
 	/**
 	 * Sets the name.
 	 *
-	 * @param name the new name
+	 * @param name
+	 *            the new name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -70,16 +70,17 @@ public class Job {
 	 *
 	 * @return the humans
 	 */
-	public Collection<Human> getHumans() {
+	public Set<Human> getHumans() {
 		return humans;
 	}
 
 	/**
 	 * Sets the humans.
 	 *
-	 * @param humans the new humans
+	 * @param humans
+	 *            the new humans
 	 */
-	public void setHumans(Collection<Human> humans) {
+	public void setHumans(Set<Human> humans) {
 		this.humans = humans;
 	}
 
@@ -95,7 +96,8 @@ public class Job {
 	/**
 	 * Sets the base time.
 	 *
-	 * @param baseTime the new base time
+	 * @param baseTime
+	 *            the new base time
 	 */
 	public void setBaseTime(Float baseTime) {
 		this.baseTime = baseTime;
@@ -113,7 +115,8 @@ public class Job {
 	/**
 	 * Sets the base chance success.
 	 *
-	 * @param baseChanceSuccess the new base chance success
+	 * @param baseChanceSuccess
+	 *            the new base chance success
 	 */
 	public void setBaseChanceSuccess(Float baseChanceSuccess) {
 		this.baseChanceSuccess = baseChanceSuccess;
@@ -131,7 +134,8 @@ public class Job {
 	/**
 	 * Sets the base chance encounter.
 	 *
-	 * @param baseChanceEncounter the new base chance encounter
+	 * @param baseChanceEncounter
+	 *            the new base chance encounter
 	 */
 	public void setBaseChanceEncounter(Float baseChanceEncounter) {
 		this.baseChanceEncounter = baseChanceEncounter;
@@ -142,16 +146,17 @@ public class Job {
 	 *
 	 * @return the loot
 	 */
-	public Collection<Loot> getLoot() {
+	public Set<Loot> getLoot() {
 		return loot;
 	}
 
 	/**
 	 * Sets the loot.
 	 *
-	 * @param loot the new loot
+	 * @param loot
+	 *            the new loot
 	 */
-	public void setLoot(Collection<Loot> loot) {
+	public void setLoot(Set<Loot> loot) {
 		this.loot = loot;
 	}
 
@@ -164,7 +169,9 @@ public class Job {
 		return id;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -174,6 +181,5 @@ public class Job {
 				+ baseChanceSuccess + ", baseChanceEncounter="
 				+ baseChanceEncounter + ", loot=" + loot + "]";
 	}
-	
-	
+
 }
