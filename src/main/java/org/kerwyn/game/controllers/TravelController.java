@@ -1,5 +1,6 @@
 package org.kerwyn.game.controllers;
 
+import org.kerwyn.game.entities.Being;
 import org.kerwyn.game.entities.BeingType;
 import org.kerwyn.game.entities.User;
 import org.kerwyn.game.travel.TravelResolver;
@@ -55,7 +56,7 @@ public class TravelController {
 	 *             the travel controller exception
 	 */
 	@RequestMapping(value = "/game/travel", method = RequestMethod.POST)
-	public Float travel(
+	public Being travel(
 			@RequestParam(value = "being", required = true) final Long beingId,
 			@RequestParam(value = "location", required = true) final Integer location)
 			throws TravelControllerException {
