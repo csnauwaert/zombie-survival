@@ -10,11 +10,14 @@ import org.kerwyn.game.travel.TravelValidatorException;
 import org.kerwyn.game.travel.TravelValidatorFactory;
 import org.kerwyn.game.utils.BeingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 // TODO: Auto-generated Javadoc
@@ -78,5 +81,11 @@ public class TravelController {
 		}
 
 		return resolver.resolve(beingId, location);
+	}
+
+	@ExceptionHandler
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public String handleTravelControllerException(TravelControllerException e) {
+		return e.getMessage();
 	}
 }
