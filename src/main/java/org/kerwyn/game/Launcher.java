@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -25,8 +24,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class Launcher {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(
-				Launcher.class, args);
+		SpringApplication.run(Launcher.class, args);
 	}
 
 	@Configuration
