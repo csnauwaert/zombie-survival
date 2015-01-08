@@ -27,7 +27,7 @@ public class RegisterUserController {
 	public User createNewUser(
 			@RequestParam(value = "username", required = true) String username, 
 			@RequestParam(value= "password", required = true) String password) {
-		return userService.save(new User(username, password, true, username));
+		return userService.create(new User(username, password, true, username));
 	}
 	
 	@RequestMapping(value = "/test_read", method=RequestMethod.GET)
