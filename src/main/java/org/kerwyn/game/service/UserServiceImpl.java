@@ -1,8 +1,10 @@
 package org.kerwyn.game.service;
 
 import org.kerwyn.game.entities.Authority;
+import org.kerwyn.game.entities.Crew;
 import org.kerwyn.game.entities.User;
 import org.kerwyn.game.repositories.AuthorityRepository;
+import org.kerwyn.game.repositories.CrewRepository;
 import org.kerwyn.game.repositories.UserRepository;
 import org.kerwyn.game.service.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private AuthorityRepository authorityRepository;
+	
+	@Autowired
+	private CrewRepository crewRepository;
 
 	@Override
 	public User save(User user) {
@@ -33,8 +38,10 @@ public class UserServiceImpl implements UserService {
 		}
 		authorityRepository
 				.save(new Authority(user.getUsername(), "ROLE_USER"));
-
-		return userRepository.save(user);
+		userRepository.save(user);
+		//Upon creation of new user, should create a new Crew for him
+		crewRepository.save(new Crew(user));
+		return user;
 
 	}
 

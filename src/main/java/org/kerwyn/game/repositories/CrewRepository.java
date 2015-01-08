@@ -1,13 +1,10 @@
 package org.kerwyn.game.repositories;
 
-
-import org.kerwyn.game.entities.User;
+import org.kerwyn.game.entities.Crew;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
-		
-	public User findOneByUsername(String username);
-
+public interface CrewRepository extends CrudRepository<Crew, Long> {
+	
 }

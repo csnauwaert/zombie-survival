@@ -1,5 +1,7 @@
 package org.kerwyn.game.entities;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,10 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class User.
  */
@@ -24,7 +25,6 @@ public class User {
 	private Long id;
 
 	/** The login. */
-
 	@Column(nullable = false)
 	private String username;
 
@@ -32,7 +32,7 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-	/** The pseudo. */
+	/** The status of user (active-inactive). */
 	@Column(nullable = false)
 	private Boolean enabled;
 
@@ -40,8 +40,9 @@ public class User {
 	@Column(nullable = false)
 	private String pseudo;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Crew.class, fetch = FetchType.LAZY)
-	private Crew crew;
+	/** The crew. */
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity = Crew.class, fetch = FetchType.EAGER)
+	private Set<Crew> crew;
 
 	/**
 	 * Instantiates a new user.
@@ -49,146 +50,69 @@ public class User {
 	public User() {
 	}
 
-	/**
-	 * Instantiates a new user.
-	 *
-	 * @param username
-	 *            the new login
-	 * @param password
-	 *            the new password
-	 * @param enabled
-	 *            if user is active or not
-	 */
-	public User(final String username, final String password,
-			final Boolean enabled) {
+	public User(String username, String password, Boolean enabled, String pseudo) {
+		super();
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
+		this.pseudo = pseudo;
 	}
-
+	
 	/**
-	 * Gets the login.
-	 *
-	 * @return the login
+	 * Getter and Setter
 	 */
+
 	public String getUsername() {
 		return username;
 	}
 
-	/**
-	 * Gets the password.
-	 *
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * Gets enabled status.
-	 *
-	 * @return the active state
-	 */
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Gets the pseudo.
-	 *
-	 * @return the pseudo
-	 */
-	public String getPseudo() {
-		return pseudo;
-	}
-
-	/**
-	 * Sets the pseudo.
-	 *
-	 * @param pseudo
-	 *            the new pseudo
-	 */
-	public void setPseudo(String pseudo) {
-		this.pseudo = pseudo;
-	}
-
-	/**
-	 * Gets the crew.
-	 *
-	 * @return the crew
-	 */
-	public Crew getCrew() {
-		return crew;
-	}
-
-	/**
-	 * Sets the crew.
-	 *
-	 * @param crew
-	 *            the new crew
-	 */
-	public void setCrew(Crew crew) {
-		this.crew = crew;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id
-	 *            the new id
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * Sets the username.
-	 *
-	 * @param username
-	 *            the new username
-	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
-	/**
-	 * Sets the password.
-	 *
-	 * @param password
-	 *            the new password
-	 */
+	public String getPassword() {
+		return password;
+	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	/**
-	 * Sets the enabled.
-	 *
-	 * @param enabled
-	 *            the new enabled
-	 */
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
+	public Set<Crew> getCrew() {
+		return crew;
+	}
+
+	public void setCrew(Set<Crew> crew) {
+		this.crew = crew;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password="
-				+ password + ", enabled=" + enabled + "]";
+				+ password + ", enabled=" + enabled + ", pseudo=" + pseudo
+				+ ", crew size=" + crew.size() + "]";
 	}
+
+	
 
 }

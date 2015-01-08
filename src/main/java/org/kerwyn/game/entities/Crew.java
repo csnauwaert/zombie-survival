@@ -1,16 +1,14 @@
 package org.kerwyn.game.entities;
 
-import java.util.Collection;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,7 +24,7 @@ public class Crew {
 	private long id;
 
 	/** The user. */
-	@OneToOne(optional = false, cascade = CascadeType.ALL, targetEntity = User.class, orphanRemoval = true)
+	@ManyToOne(optional = false, targetEntity = User.class)
 	private User user;
 
 	/** The humans. */
@@ -37,74 +35,59 @@ public class Crew {
 	@OneToMany(targetEntity = LocationTime.class, fetch = FetchType.LAZY)
 	private Set<LocationTime> locationTimes;
 
+	/** The loots. */
 	@OneToMany(targetEntity = Loot.class)
 	private Set<Loot> loots;
 
+
 	/**
-	 * Gets the humans.
-	 *
-	 * @return the humans
+	 * Constructor
 	 */
-	public Collection<Human> getHumans() {
-		return humans;
+	
+	public Crew() {
+	}
+
+
+	public Crew(User user) {
+		super();
+		this.user = user;
 	}
 
 	/**
-	 * Sets the humans.
-	 *
-	 * @param humans
-	 *            the new humans
+	 * The Getter and Setter
 	 */
-	public void setHumans(Set<Human> humans) {
-		this.humans = humans;
-	}
-
-	/**
-	 * Gets the location times.
-	 *
-	 * @return the location times
-	 */
-	public Set<LocationTime> getLocationTimes() {
-		return locationTimes;
-	}
-
-	/**
-	 * Sets the location times.
-	 *
-	 * @param locationTimes
-	 *            the new location times
-	 */
-	public void setLocationTimes(Set<LocationTime> locationTimes) {
-		this.locationTimes = locationTimes;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
+	
 	public long getId() {
 		return id;
 	}
 
-	/**
-	 * Gets the user.
-	 *
-	 * @return the user
-	 */
+
 	public User getUser() {
 		return user;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
+
+	public Set<Human> getHumans() {
+		return humans;
+	}
+
+
+	public Set<LocationTime> getLocationTimes() {
+		return locationTimes;
+	}
+
+
+	public Set<Loot> getLoots() {
+		return loots;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Crew [id=" + id + ", user=" + user + ", humans=" + humans
-				+ ", locationTimes=" + locationTimes + "]";
+		return "Crew [id=" + id + ", user=" + user.getId() + ", humans_size=" + humans.size()
+				+ ", locationTimes_size=" + locationTimes.size() + ", loots_size=" + loots.size() + "]";
 	}
+
+	
 
 }
