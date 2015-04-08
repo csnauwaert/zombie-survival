@@ -12,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.kerwyn.game.controllers.View;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * The Class User.
  */
@@ -25,6 +29,7 @@ public class User {
 	private Long id;
 
 	/** The login. */
+	@JsonView(View.UserBasicView.class)
 	@Column(nullable = false)
 	private String username;
 
@@ -41,6 +46,7 @@ public class User {
 	private String pseudo;
 
 	/** The crew. */
+	@JsonView(View.UserBasicView.class)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity = Crew.class, fetch = FetchType.EAGER)
 	private Set<Crew> crew;
 

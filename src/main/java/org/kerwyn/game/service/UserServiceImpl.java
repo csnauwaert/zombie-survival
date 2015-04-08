@@ -8,11 +8,10 @@ import org.kerwyn.game.repositories.UserRepository;
 import org.kerwyn.game.service.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
 
 @Service
-@Validated
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -25,6 +24,7 @@ public class UserServiceImpl implements UserService {
 	private CrewService crewService;
 
 	@Override
+	@Transactional
 	public User create(User user) {
 		User existing_user = userRepository.findOneByUsername(user
 				.getUsername());
@@ -45,20 +45,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(User user) {
 		userRepository.delete(user.getId());
 	}
 
 	@Override
-	public boolean enable(boolean enable) {
+	public void enable(User user, boolean enable) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
-	public boolean change_auth_level(User user, String auth_level) {
+	public void change_auth_level(User user, String auth_level) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

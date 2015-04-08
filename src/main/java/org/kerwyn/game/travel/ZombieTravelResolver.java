@@ -20,7 +20,7 @@ public class ZombieTravelResolver implements TravelResolver {
 	 * @see org.kerwyn.game.travel.TravelResolver#resolve(java.lang.Integer)
 	 */
 	@Override
-	public Zombie resolve(final Long beingId, final Integer destination) {
+	public Zombie resolve(final Long beingId, final String destination) {
 
 		return null;
 	}

@@ -47,11 +47,11 @@ public class HumanTravelResolver implements TravelResolver {
 	 * java.lang.Integer)
 	 */
 	@Override
-	public Human resolve(final Long beingId, final Integer destination) {
+	public Human resolve(final Long beingId, final String destination) {
 		final Human current = this.humanRepo.findOne(beingId);
 		final Location destinationLocation = locationRepository
 				.findOneByCoordinate(destination);
-		current.setCurrentLocation(destinationLocation);
+		current.setLocation(destinationLocation);
 		final LocationTime locationTime = LocationTimeFactory.getInstance(
 				destinationLocation, current.getCrew());
 

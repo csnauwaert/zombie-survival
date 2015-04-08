@@ -2,16 +2,16 @@ package org.kerwyn.game.entities;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Location.
  */
@@ -24,164 +24,68 @@ public class Location {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	/** The coordinate. */
-	@Column
-	private Integer coordinate;
+	/** The coordinate in a format x:y. */
+	@Column(nullable = false)
+	private String coordinate;
+	
+	/** The type of the tile example: 1:grass, 2:sand, ...*/
+	@Column(nullable = false)
+	private int tile_type;
 
 	/** The loots. */
-	@ManyToMany(targetEntity = Loot.class)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Loot.class, fetch = FetchType.EAGER)
 	private Set<Loot> loots;
 
 	/** The building. */
-	@ManyToMany(targetEntity = Building.class)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Building.class, fetch = FetchType.EAGER)
 	private Set<Building> buildings;
 
 	/** The humans. */
-	@OneToMany(targetEntity = Human.class)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Human.class, fetch = FetchType.EAGER)
 	private Set<Human> humans;
 
 	/** The zombies. */
-	@OneToMany(targetEntity = Zombie.class)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Zombie.class, fetch = FetchType.EAGER)
 	private Set<Zombie> zombies;
 
-	/**
-	 * Gets the coordinate.
-	 *
-	 * @return the coordinate
-	 */
-	public Integer getCoordinate() {
-		return coordinate;
+	public Location(){
+		
 	}
-
-	/**
-	 * Sets the coordinate.
-	 *
-	 * @param coordinate
-	 *            the new coordinate
-	 */
-	public void setCoordinate(Integer coordinate) {
+	
+	public Location(String coordinate, int tile_type){
 		this.coordinate = coordinate;
+		this.tile_type = tile_type;
 	}
 
 	/**
-	 * Gets the loots.
-	 *
-	 * @return the loots
+	 * Getter and Setter
 	 */
-	public Set<Loot> getLoots() {
-		return loots;
-	}
-
-	/**
-	 * Sets the loots.
-	 *
-	 * @param loots
-	 *            the new loots
-	 */
-	public void setLoots(Set<Loot> loots) {
-		this.loots = loots;
-	}
-
-	/**
-	 * Gets the building.
-	 *
-	 * @return the building
-	 */
-	public Set<Building> getBuildings() {
-		return buildings;
-	}
-
-	/**
-	 * Sets the building.
-	 *
-	 * @param building
-	 *            the new building
-	 */
-	public void setBuildings(Set<Building> buildings) {
-		this.buildings = buildings;
-	}
-
-	/**
-	 * Gets the humans.
-	 *
-	 * @return the humans
-	 */
-	public Set<Human> getHumans() {
-		return humans;
-	}
-
-	/**
-	 * Sets the humans.
-	 *
-	 * @param humans
-	 *            the new humans
-	 */
-	public void setHumans(Set<Human> humans) {
-		this.humans = humans;
-	}
-
-	/**
-	 * Adds the human.
-	 *
-	 * @param human
-	 *            the human
-	 * @return the human
-	 */
-	public Human addHuman(Human human) {
-		this.humans.add(human);
-		return human;
-	}
-
-	/**
-	 * Removes the human.
-	 *
-	 * @param human
-	 *            the human
-	 * @return the human
-	 */
-	public Human removeHuman(Human human) {
-		this.humans.remove(human);
-		return human;
-	}
-
-	/**
-	 * Gets the zombies.
-	 *
-	 * @return the zombies
-	 */
-	public Set<Zombie> getZombies() {
-		return zombies;
-	}
-
-	/**
-	 * Sets the zombies.
-	 *
-	 * @param zombies
-	 *            the new zombies
-	 */
-	public void setZombies(Set<Zombie> zombies) {
-		this.zombies = zombies;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
+	
 	public long getId() {
 		return id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Location [id=" + id + ", coordinate=" + coordinate + ", loots="
-				+ loots + ", buildings=" + buildings + ", humans=" + humans
-				+ ", zombies=" + zombies + "]";
+	public String getCoordinate() {
+		return coordinate;
+	}
+	
+	public int getTile_Type() {
+		return tile_type;
 	}
 
+	public Set<Loot> getLoots() {
+		return loots;
+	}
+
+	public Set<Building> getBuildings() {
+		return buildings;
+	}
+
+	public Set<Human> getHumans() {
+		return humans;
+	}
+
+	public Set<Zombie> getZombies() {
+		return zombies;
+	}
 }

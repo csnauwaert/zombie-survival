@@ -61,7 +61,7 @@ public class TravelController {
 	@RequestMapping(value = "/game/travel", method = RequestMethod.POST)
 	public Being travel(
 			@RequestParam(value = "being", required = true) final Long beingId,
-			@RequestParam(value = "location", required = true) final Integer location)
+			@RequestParam(value = "location", required = true) final String location)
 			throws TravelControllerException {
 
 		Authentication authentication = SecurityContextHolder.getContext()

@@ -59,8 +59,8 @@ public class Human implements Being {
 	private Job awayJob;
 
 	/** The current location. */
-	@ManyToOne(targetEntity = Location.class)
-	private Location currentLocation;
+	@ManyToOne(optional = false, targetEntity = Location.class)
+	private Location location;
 
 	/** The capacity. */
 	@Column
@@ -235,8 +235,8 @@ public class Human implements Being {
 	 *
 	 * @return the current location
 	 */
-	public Location getCurrentLocation() {
-		return currentLocation;
+	public Location getLocation() {
+		return this.location;
 	}
 
 	/**
@@ -245,8 +245,8 @@ public class Human implements Being {
 	 * @param currentLocation
 	 *            the new current location
 	 */
-	public void setCurrentLocation(Location currentLocation) {
-		this.currentLocation = currentLocation;
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	/**
@@ -357,7 +357,7 @@ public class Human implements Being {
 				+ ", infected=" + infected + ", dead=" + dead
 				+ ", timeBeforeTurning=" + timeBeforeTurning + ", away=" + away
 				+ ", timeBeforeReturn=" + timeBeforeReturn + ", awayJob="
-				+ awayJob + ", currentLocation=" + currentLocation
+				+ awayJob + ", location=" + location
 				+ ", capacity=" + capacity + ", skills=" + skills + ", loots="
 				+ loots + ", locationTimes=" + locationTimes + "]";
 	}

@@ -1,7 +1,9 @@
 package org.kerwyn.game.controllers;
 
 
+import org.kerwyn.game.entities.Crew;
 import org.kerwyn.game.entities.User;
+import org.kerwyn.game.repositories.CrewRepository;
 import org.kerwyn.game.repositories.UserRepository;
 import org.kerwyn.game.service.UserService;
 import org.kerwyn.game.service.exception.UserAlreadyExistsException;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 @RestController
 public class RegisterUserController {
 
@@ -24,6 +28,21 @@ public class RegisterUserController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CrewRepository crewRepository;
+	
+	@JsonView(View.UserBasicView.class)
+	@RequestMapping(value = "/user", method=RequestMethod.GET)
+	public User readUser() {
+		return userRepository.findOne(1L);
+	}
+	
+	@JsonView(View.CrewBasicView.class)
+	@RequestMapping(value = "/crew", method=RequestMethod.GET)
+	public Crew readCrew() {
+		return crewRepository.findOne(1L);
+	}
 	
 	@RequestMapping(value = "/register_user", method=RequestMethod.POST)
 	public User createNewUser(

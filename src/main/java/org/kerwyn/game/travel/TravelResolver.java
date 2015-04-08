@@ -18,6 +18,6 @@ public interface TravelResolver {
 	 *            the destination
 	 * @return the float
 	 */
-	public Being resolve(final Long beingId, final Integer destination);
+	public Being resolve(final Long beingId, final String destination);
 
 }

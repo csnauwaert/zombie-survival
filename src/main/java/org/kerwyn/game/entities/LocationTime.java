@@ -32,7 +32,7 @@ public class LocationTime {
 
 	/** The coordinate. */
 	@Column
-	private Integer coordinate;
+	private String coordinate;
 
 	/** The view. */
 	@Column
@@ -74,7 +74,7 @@ public class LocationTime {
 	 * @param humans the humans
 	 * @param zombies the zombies
 	 */
-	public LocationTime(Crew crew, Integer coordinate, Date view,
+	public LocationTime(Crew crew, String coordinate, Date view,
 			Set<Loot> loots, Set<Building> buildings, Set<Human> humans,
 			Set<Zombie> zombies) {
 		this.crew = crew;
@@ -112,7 +112,7 @@ public class LocationTime {
 	 *
 	 * @return the coordinate
 	 */
-	public Integer getCoordinate() {
+	public String getCoordinate() {
 		return coordinate;
 	}
 
@@ -122,7 +122,7 @@ public class LocationTime {
 	 * @param coordinate
 	 *            the new coordinate
 	 */
-	public void setCoordinate(Integer coordinate) {
+	public void setCoordinate(String coordinate) {
 		this.coordinate = coordinate;
 	}
 

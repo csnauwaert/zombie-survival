@@ -30,7 +30,7 @@ public class HumanTravelValidator implements TravelValidator {
 	 * java.lang.Integer)
 	 */
 	@Override
-	public void validate(Long beingId, Integer destination)
+	public void validate(Long beingId, String destination)
 			throws TravelException {
 
 		final Long countByCoordinate = locationRepository

@@ -13,7 +13,7 @@ public interface TravelValidator {
 	 * @throws TravelException
 	 *             the travel exception
 	 */
-	public void validate(final Long beingId, final Integer destination)
+	public void validate(final Long beingId, final String destination)
 			throws TravelException;
 
 }

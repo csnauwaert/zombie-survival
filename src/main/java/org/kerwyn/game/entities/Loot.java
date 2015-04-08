@@ -32,6 +32,9 @@ public class Loot {
 	/** The ownership. */
 	@ManyToOne(targetEntity=Crew.class)
 	private Crew ownership;
+	
+	@ManyToOne(optional = false, targetEntity = Location.class)
+	private Location location;
 
 	/**
 	 * Gets the name.

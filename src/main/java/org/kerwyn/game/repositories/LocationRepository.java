@@ -2,13 +2,13 @@ package org.kerwyn.game.repositories;
 
 import org.kerwyn.game.entities.Location;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Interface LocationRepository.
  */
-@Component
+@Repository
 public interface LocationRepository extends CrudRepository<Location, Long> {
 
 	/**
@@ -17,14 +17,14 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
 	 * @param coordinate the coordinate
 	 * @return the location
 	 */
-	Location findOneByCoordinate(Integer coordinate);
-
+	Location findOneByCoordinate(String coordinate);
+	
 	/**
 	 * Count by coordinate.
 	 *
 	 * @param coordinate the coordinate
 	 * @return the long
 	 */
-	Long countByCoordinate(Integer coordinate);
+	Long countByCoordinate(String coordinate);
 
 }

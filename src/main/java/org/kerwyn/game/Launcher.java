@@ -2,11 +2,12 @@ package org.kerwyn.game;
 
 import javax.sql.DataSource;
 
+import org.kerwyn.game.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -14,17 +15,27 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //import org.springframework.security.config.http.SessionCreationPolicy;
 
-@ComponentScan
-@Configuration
-@EnableAutoConfiguration
+@SpringBootApplication
 @EnableJpaRepositories
+@EnableTransactionManagement
 public class Launcher {
-
+	
 	public static void main(String[] args) {
-		SpringApplication.run(Launcher.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(Launcher.class, args);
+		LocationService locationService = context.getBean(LocationService.class);
+//		String test = context.getEnvironment().getProperty("spring.thymeleaf.cache");
+//		System.out.println(test);
+//		System.out.println("-------------------------------------------");
+		//Should pass an argument to state whether it should install
+		//basic features or just launch server.
+		//If install is passed, it should create the map, the admin user
+		//zombies, some basic loots locations, etc.
+		//Also should erase everything from the db is install is passed
+		locationService.createMap(10,10);
 	}
 
 	@Configuration

@@ -2,6 +2,7 @@ package org.kerwyn.game.entities;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.kerwyn.game.controllers.View;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 /**
  * The Class Crew.
@@ -20,6 +25,7 @@ public class Crew {
 
 	/** The id. */
 	@Id
+	@JsonView({View.UserBasicView.class, View.CrewBasicView.class})
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
@@ -28,16 +34,12 @@ public class Crew {
 	private User user;
 
 	/** The humans. */
-	@OneToMany(targetEntity = Human.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, targetEntity = Human.class, fetch = FetchType.EAGER)
 	private Set<Human> humans;
 
 	/** The location times. */
-	@OneToMany(targetEntity = LocationTime.class, fetch = FetchType.LAZY)
-	private Set<LocationTime> locationTimes;
-
-	/** The loots. */
-	@OneToMany(targetEntity = Loot.class)
-	private Set<Loot> loots;
+	@ManyToOne(targetEntity = LocationTime.class)
+	private LocationTime locationTime;
 
 
 	/**
@@ -72,20 +74,15 @@ public class Crew {
 	}
 
 
-	public Set<LocationTime> getLocationTimes() {
-		return locationTimes;
-	}
-
-
-	public Set<Loot> getLoots() {
-		return loots;
+	public LocationTime getLocationTimes() {
+		return locationTime;
 	}
 
 
 	@Override
 	public String toString() {
 		return "Crew [id=" + id + ", user=" + user.getId() + ", humans_size=" + humans.size()
-				+ ", locationTimes_size=" + locationTimes.size() + ", loots_size=" + loots.size() + "]";
+				+ "]";
 	}
 
 	

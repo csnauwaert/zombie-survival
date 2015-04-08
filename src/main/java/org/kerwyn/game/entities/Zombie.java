@@ -24,7 +24,7 @@ public class Zombie implements Being {
 	private Long id;
 
 	/** The location. */
-	@ManyToOne(targetEntity = Location.class)
+	@ManyToOne(optional = false, targetEntity = Location.class)
 	private Location location;
 
 	/** The number. */
