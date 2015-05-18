@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ZOMBIES")
-public class Zombie implements Being {
+public class Zombie {
 
 	/** The id. */
 	@Id

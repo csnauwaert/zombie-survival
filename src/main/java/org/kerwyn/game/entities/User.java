@@ -47,7 +47,7 @@ public class User {
 
 	/** The crew. */
 	@JsonView(View.UserBasicView.class)
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, targetEntity = Crew.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Crew.class, fetch = FetchType.EAGER)
 	private Set<Crew> crew;
 
 	/**

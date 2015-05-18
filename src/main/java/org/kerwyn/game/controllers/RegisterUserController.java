@@ -1,11 +1,10 @@
 package org.kerwyn.game.controllers;
 
 
-import org.kerwyn.game.entities.Crew;
 import org.kerwyn.game.entities.User;
-import org.kerwyn.game.repositories.CrewRepository;
 import org.kerwyn.game.repositories.UserRepository;
 import org.kerwyn.game.service.UserService;
+import org.kerwyn.game.service.exception.AuthorityLevelException;
 import org.kerwyn.game.service.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,21 +28,7 @@ public class RegisterUserController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Autowired
-	private CrewRepository crewRepository;
-	
 	@JsonView(View.UserBasicView.class)
-	@RequestMapping(value = "/user", method=RequestMethod.GET)
-	public User readUser() {
-		return userRepository.findOne(1L);
-	}
-	
-	@JsonView(View.CrewBasicView.class)
-	@RequestMapping(value = "/crew", method=RequestMethod.GET)
-	public Crew readCrew() {
-		return crewRepository.findOne(1L);
-	}
-	
 	@RequestMapping(value = "/register_user", method=RequestMethod.POST)
 	public User createNewUser(
 			@RequestParam(value = "username", required = true) String username, 
@@ -51,14 +36,15 @@ public class RegisterUserController {
 		return userService.create(new User(username, password, true, username));
 	}
 	
-	@RequestMapping(value = "/game/delete_user", method=RequestMethod.POST)
+	@RequestMapping(value = "/game/delete_user", method=RequestMethod.GET)
 	public boolean deleteUser(){
 		Authentication authentication = SecurityContextHolder.getContext()
 				.getAuthentication();
 		User user = userRepository.findOneByUsername(authentication.getName());
 		if (user != null) {
 			userService.delete(user);
-			//TODO Should perform a logout
+			//perform a logout
+			SecurityContextHolder.getContext().setAuthentication(null);
 			return true;
 		}
 		else {
@@ -66,9 +52,27 @@ public class RegisterUserController {
 		}
 	}
 	
+//	@RequestMapping(value = "/game/change_password", method=RequestMethod.POST)
+//	public User changePassword(){
+		
+//		return userService.change_password(user, old_password, new_password)
+//	}
+	
+	
+	//TODO: change exception handling system, just create generic exception with
+	//a message inside, maybe one exception type per responseStatus?
+	//NotFoundException, ConflictException, AccessRightException, ...
+	// + Create a class genericController that just handle Exception and all other
+	//controller should extend from that class
 	@ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleUserAlreadyExistsException(UserAlreadyExistsException e) {
-        return e.getMessage();
+		return e.getMessage();
     }
+	
+	@ExceptionHandler
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public String handleAuthorityLevelException(AuthorityLevelException e) {
+		return e.getMessage();
+	}
 }

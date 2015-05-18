@@ -4,13 +4,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
@@ -23,11 +26,13 @@ public class LocationTime {
 
 	/** The id. */
 	@Id
+	@Column(name = "LOC_TIME_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	/** The crew. */
-	@ManyToOne(targetEntity = Crew.class)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "CREW_ID", referencedColumnName="CREW_ID")
 	private Crew crew;
 
 	/** The coordinate. */
@@ -240,6 +245,10 @@ public class LocationTime {
 				+ coordinate + ", view=" + view + ", loots=" + loots
 				+ ", building=" + buildings + ", humans=" + humans
 				+ ", zombies=" + zombies + "]";
+	}
+	
+	public void removeCrew(){
+		this.crew = null;
 	}
 
 }

@@ -1,10 +1,10 @@
 package org.kerwyn.game.entities;
 
-import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,75 +18,64 @@ import javax.persistence.Table;
 @Table(name = "SKILLS")
 public class Skill {
 
-	/** The id. */
 	@Id
+	@Column(name = "SKILL_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	/** The name. */
-	@Column
+	@Column(nullable = false)
 	private String name;
 
-	/** The humans. */
-	@ManyToMany(targetEntity = Human.class)
+	@ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
 	private Set<Human> humans;
 
 	/**
-	 * Gets the name.
-	 *
-	 * @return the name
+	 * Constructor
 	 */
+	
+	public Skill() {
+		super();
+	}
+	
+	public Skill(String name) {
+		super();
+		this.name = name;
+	}
+	
+	/**
+	 * Methods
+	 */
+	
+	public void addHuman(Human human){
+		human.addSkill(this);
+	}
+	
+	public void removeHuman(Human human){
+		human.removeSkill(this);
+	}
+	
+	/**
+	 * Getter and Setter
+	 */
+
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Sets the name.
-	 *
-	 * @param name
-	 *            the new name
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Gets the humans.
-	 *
-	 * @return the humans
-	 */
-	public Collection<Human> getHumans() {
+	public Set<Human> getHumans() {
 		return humans;
 	}
 
-	/**
-	 * Sets the humans.
-	 *
-	 * @param humans
-	 *            the new humans
-	 */
 	public void setHumans(Set<Human> humans) {
 		this.humans = humans;
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
 	public long getId() {
 		return id;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Skill [id=" + id + ", name=" + name + ", humans=" + humans
-				+ "]";
 	}
 
 }

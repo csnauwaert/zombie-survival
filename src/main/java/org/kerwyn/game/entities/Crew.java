@@ -3,6 +3,7 @@ package org.kerwyn.game.entities;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ public class Crew {
 	/** The id. */
 	@Id
 	@JsonView({View.UserBasicView.class, View.CrewBasicView.class})
+	@Column(name = "CREW_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
@@ -34,12 +36,12 @@ public class Crew {
 	private User user;
 
 	/** The humans. */
-	@OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, targetEntity = Human.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Human.class, fetch = FetchType.EAGER)
 	private Set<Human> humans;
 
 	/** The location times. */
-	@ManyToOne(targetEntity = LocationTime.class)
-	private LocationTime locationTime;
+	@OneToMany(mappedBy = "crew", targetEntity = LocationTime.class, fetch = FetchType.EAGER)
+	private Set<LocationTime> locationTime;
 
 
 	/**
@@ -53,6 +55,26 @@ public class Crew {
 	public Crew(User user) {
 		super();
 		this.user = user;
+	}
+	
+	/**
+	 * Methods
+	 */
+	
+	public void addHuman(Human human) {
+		human.setCrew(this);
+	}
+	
+	public void removeHuman(Human human) {
+		human.removeCrew();
+	}
+	
+	public void addLocationTime(LocationTime loc) {
+		loc.setCrew(this);
+	}
+	
+	public void removeLocationTime(LocationTime loc) {
+		loc.removeCrew();
 	}
 
 	/**
@@ -72,19 +94,15 @@ public class Crew {
 	public Set<Human> getHumans() {
 		return humans;
 	}
+	
+
+	public void setHumans(Set<Human> humans) {
+		this.humans = humans;
+	}
 
 
-	public LocationTime getLocationTimes() {
+	public Set<LocationTime> getLocationTimes() {
 		return locationTime;
 	}
-
-
-	@Override
-	public String toString() {
-		return "Crew [id=" + id + ", user=" + user.getId() + ", humans_size=" + humans.size()
-				+ "]";
-	}
-
-	
 
 }

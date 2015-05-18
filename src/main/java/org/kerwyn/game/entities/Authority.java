@@ -16,54 +16,49 @@ public class Authority {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	/** The login. */
 	@Column(nullable = false)
 	private String username;
 
-	/** The password. */
 	@Column(nullable = false)
 	private String authority;
 	
+	/***
+	 * Constructor
+	 */
 	protected Authority() {
 	}
 	
-	/**
-	 * Instantiates a new user.
-	 *
-	 * @param username            the user
-	 * @param authority            the authority level
-	 */
 	public Authority(final String username, final String authority) {
 		this.username = username;
 		this.authority = authority;
 	}
-
-	/**
-	 * Gets the login.
-	 *
-	 * @return the login
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * Gets the authority.
-	 *
-	 * @return the authority
+	
+	/***
+	 * Getter and Setter
 	 */
 	public String getAuthority() {
 		return authority;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", authority=" + authority + "]";
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getUsername() {
+		return username;
 	}
 	
-
-
+	/***
+	 * Method
+	 */
+	public Boolean canChangeAuthLevel(){
+		if (this.authority.equals("ROLE_ADMIN"))
+			return true;
+		else
+			return false;
+	}
 }

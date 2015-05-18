@@ -32,7 +32,7 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public Location findEmptyLocation() {
 		// TODO Auto-generated method stub
-		return null;
+		return locationRepository.findOne(1L);
 	}
 
 	@Override

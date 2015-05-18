@@ -5,7 +5,11 @@ import org.kerwyn.game.entities.Human;
 import org.kerwyn.game.entities.Location;
 import org.kerwyn.game.repositories.HumanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+@Service
+@Validated
 public class HumanServiceImpl implements HumanService {
 
 	@Autowired
@@ -13,10 +17,9 @@ public class HumanServiceImpl implements HumanService {
 	
 	@Override
 	public Human create(Crew crew, Location loc) {
-		// TODO Auto-generated method stub
 		String name = "John Doe";
-		
-		return null;
+		Human human = new Human(name,crew,loc);
+		return humanRepository.save(human);
 	}
 
 	@Override
