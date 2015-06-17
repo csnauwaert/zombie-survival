@@ -32,7 +32,7 @@ public class LocationTime {
 
 	/** The crew. */
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "CREW_ID", referencedColumnName="CREW_ID")
+//	@JoinColumn(name = "CREW_ID", referencedColumnName="CREW_ID")
 	private Crew crew;
 
 	/** The coordinate. */

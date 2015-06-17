@@ -1,8 +1,13 @@
 package org.kerwyn.game.controllers;
 
 
+import org.kerwyn.game.entities.Crew;
+import org.kerwyn.game.entities.Human;
 import org.kerwyn.game.entities.User;
+import org.kerwyn.game.repositories.CrewRepository;
+import org.kerwyn.game.repositories.HumanRepository;
 import org.kerwyn.game.repositories.UserRepository;
+import org.kerwyn.game.service.HumanService;
 import org.kerwyn.game.service.UserService;
 import org.kerwyn.game.service.exception.AuthorityLevelException;
 import org.kerwyn.game.service.exception.UserAlreadyExistsException;
@@ -24,6 +29,15 @@ public class RegisterUserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private HumanService humanService;
+	
+	@Autowired
+	private HumanRepository humanRepository;
+	
+	@Autowired
+	private CrewRepository crewRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -50,6 +64,15 @@ public class RegisterUserController {
 		else {
 			return false;
 		}
+	}
+	
+	@RequestMapping(value = "/change", method=RequestMethod.GET)
+	public boolean changecrew(
+			@RequestParam(value = "human_id", required = true) Long human_id, 
+			@RequestParam(value= "crew_id", required = true) Long crew_id) {
+		Human human = humanRepository.findOne(human_id);
+		Crew crew = crewRepository.findOne(crew_id);
+		return humanService.change_crew(human, crew);
 	}
 	
 //	@RequestMapping(value = "/game/change_password", method=RequestMethod.POST)

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -22,15 +23,20 @@ public class Authority {
 	@Column(nullable = false)
 	private String authority;
 	
+	@OneToOne(optional = false)
+	private User user;
+	
 	/***
 	 * Constructor
 	 */
 	protected Authority() {
 	}
 	
-	public Authority(final String username, final String authority) {
-		this.username = username;
+	public Authority(User user, String authority) {
+		this.username = user.getUsername();
 		this.authority = authority;
+		this.user = user;
+		user.setAuthority(this);
 	}
 	
 	/***
@@ -50,6 +56,10 @@ public class Authority {
 
 	public String getUsername() {
 		return username;
+	}
+	
+	public User getUser() {
+		return user;
 	}
 	
 	/***

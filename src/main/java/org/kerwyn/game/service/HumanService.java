@@ -8,5 +8,5 @@ public interface HumanService {
 	
 	Human create(Crew crew, Location loc);
 	void delete(Human human);
-	
+	boolean change_crew(Human human, Crew crew);
 }

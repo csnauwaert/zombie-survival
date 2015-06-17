@@ -2,7 +2,6 @@ package org.kerwyn.game.entities;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kerwyn.game.controllers.View;
@@ -47,13 +47,16 @@ public class User {
 
 	/** The crew. */
 	@JsonView(View.UserBasicView.class)
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Crew.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<Crew> crew;
+	
+	@OneToOne(mappedBy = "user", orphanRemoval = true)
+	private Authority authority;
 
 	/**
 	 * Instantiates a new user.
 	 */
-	public User() {
+	protected User() {
 	}
 
 	public User(String username, String password, Boolean enabled, String pseudo) {
@@ -110,6 +113,14 @@ public class User {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public Authority getAuthority() {
+		return this.authority;
+	}
+	
+	public void setAuthority(Authority authority) {
+		this.authority = authority;
 	}
 
 	@Override

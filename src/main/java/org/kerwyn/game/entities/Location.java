@@ -41,8 +41,8 @@ public class Location {
 	private Set<Building> buildings;
 
 	/** The humans. */
-	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Human.class, fetch = FetchType.EAGER)
-	private Set<Human> humans;
+//	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Human.class, fetch = FetchType.EAGER)
+//	private Set<Human> humans;
 
 	/** The zombies. */
 	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Zombie.class, fetch = FetchType.EAGER)
@@ -81,9 +81,9 @@ public class Location {
 		return buildings;
 	}
 
-	public Set<Human> getHumans() {
-		return humans;
-	}
+//	public Set<Human> getHumans() {
+//		return humans;
+//	}
 
 	public Set<Zombie> getZombies() {
 		return zombies;

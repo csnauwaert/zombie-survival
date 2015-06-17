@@ -3,6 +3,7 @@ package org.kerwyn.game.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,15 +25,13 @@ import javax.persistence.Table;
 public class Human {
 
 	@Id
-	@Column(name = "HUMAN_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
 	private String name;
 
-	@ManyToOne()
-	@JoinColumn(name = "CREW_ID", referencedColumnName="CREW_ID")
+	@ManyToOne(optional = false, targetEntity = Crew.class)
 	private Crew crew;
 
 	@Column
@@ -59,15 +58,15 @@ public class Human {
 	@Column
 	private Float capacity;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name="SKILL_HUMAN",
-            joinColumns=
-            @JoinColumn(name="HUMAN_ID", referencedColumnName="HUMAN_ID"),
-      inverseJoinColumns=
-            @JoinColumn(name="SKILL_ID", referencedColumnName="SKILL_ID")
-	)
-	private Set<Skill> skills;
-
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name="SKILL_HUMAN",
+//            joinColumns=
+//            @JoinColumn(name="HUMAN_ID", referencedColumnName="HUMAN_ID"),
+//      inverseJoinColumns=
+//            @JoinColumn(name="SKILL_ID", referencedColumnName="SKILL_ID")
+//	)
+//	private Set<Skill> skills;
+//
 	@OneToMany(targetEntity = Loot.class)
 	private Set<Loot> loots;
 
@@ -97,27 +96,27 @@ public class Human {
 		this.crew = null;
 	}
 	
-	public void addSkill(Skill skill) {
-		if (this.skills == null){
-			this.skills = new HashSet<Skill>();
-		}
-		this.skills.add(skill);
-	}
-	
-	public void removeSkill(Skill skill) {
-		if (this.skills == null){
-			this.skills = new HashSet<Skill>();
-		}
-		this.skills.remove(skill);
-	}
-	
-	/**
-	 * Getter and Setter
-	 */
-
-	public Set<Skill> getSkills() {
-		return skills;
-	}
+//	public void addSkill(Skill skill) {
+//		if (this.skills == null){
+//			this.skills = new HashSet<Skill>();
+//		}
+//		this.skills.add(skill);
+//	}
+//	
+//	public void removeSkill(Skill skill) {
+//		if (this.skills == null){
+//			this.skills = new HashSet<Skill>();
+//		}
+//		this.skills.remove(skill);
+//	}
+//	
+//	/**
+//	 * Getter and Setter
+//	 */
+//
+//	public Set<Skill> getSkills() {
+//		return skills;
+//	}
 
 	public Crew getCrew() {
 		return crew;
@@ -127,8 +126,8 @@ public class Human {
 		this.crew = crew;
 	}
 
-	public void setSkills(Set<Skill> skills) {
-		this.skills = skills;
-	}
+//	public void setSkills(Set<Skill> skills) {
+//		this.skills = skills;
+//	}
 
 }

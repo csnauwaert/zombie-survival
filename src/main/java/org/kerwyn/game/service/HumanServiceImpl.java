@@ -6,6 +6,7 @@ import org.kerwyn.game.entities.Location;
 import org.kerwyn.game.repositories.HumanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 @Service
@@ -26,6 +27,13 @@ public class HumanServiceImpl implements HumanService {
 	public void delete(Human human) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	@Transactional
+	public boolean change_crew(Human human, Crew crew) {
+		human.setCrew(crew);
+		return true;
 	}
 
 }

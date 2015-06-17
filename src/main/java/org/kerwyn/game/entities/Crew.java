@@ -2,8 +2,6 @@ package org.kerwyn.game.entities;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,20 +25,19 @@ public class Crew {
 	/** The id. */
 	@Id
 	@JsonView({View.UserBasicView.class, View.CrewBasicView.class})
-	@Column(name = "CREW_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	/** The user. */
-	@ManyToOne(optional = false, targetEntity = User.class)
+	@ManyToOne(optional = false)
 	private User user;
 
 	/** The humans. */
-	@OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Human.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "crew", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<Human> humans;
 
 	/** The location times. */
-	@OneToMany(mappedBy = "crew", targetEntity = LocationTime.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "crew", orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<LocationTime> locationTime;
 
 
@@ -81,7 +78,7 @@ public class Crew {
 	 * The Getter and Setter
 	 */
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

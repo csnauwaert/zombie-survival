@@ -1,6 +1,13 @@
 package org.kerwyn.game.service;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.log4j.Logger;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.kerwyn.game.config.Config;
 import org.kerwyn.game.entities.Crew;
 import org.kerwyn.game.entities.Location;
@@ -19,25 +26,37 @@ public class CrewServiceImpl implements CrewService {
 
 	@Autowired
 	private CrewRepository crewRepository;
-	
+
 	@Autowired
 	private HumanService humanService;
-	
+
 	@Autowired
 	private LocationService locationService;
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	@Autowired
 	private Config config;
-	
+
 	private Logger log = Logger.getLogger(CrewService.class);
-	
+
+	@PersistenceContext
+	EntityManager entityManager;
+
+	protected Session getCurrentSession()  {
+		return entityManager.unwrap(Session.class);
+	}
+
 	@Override
 	@Transactional
 	public Crew create(User user) throws NumberFormatException, ConfigurationException {
 		//Create crew
+//		Session session = getCurrentSession();
+//		SQLQuery query = session.createSQLQuery("select * from crews;");
+//		query.addEntity(Crew.class);
+//		List results = query.list();
+//		log.error(String.format("count crew = %s", results.size()));
 		log.info(String.format("Creating new crew for user %s", user.getUsername()));
 		Crew new_crew = crewRepository.save(new Crew(user));
 		//Should create humans, basic loot, etc
@@ -50,6 +69,13 @@ public class CrewServiceImpl implements CrewService {
 			humanService.create(new_crew, starting_point);
 		}
 		return new_crew;
+	}
+
+	@Override
+	@Transactional
+	public void delete(Crew crew) {
+		log.info(String.format("Delete crew: %s", crew.getId()));
+		crewRepository.delete(crew.getId());
 	}
 
 }

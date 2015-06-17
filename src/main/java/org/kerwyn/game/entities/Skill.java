@@ -26,8 +26,8 @@ public class Skill {
 	@Column(nullable = false)
 	private String name;
 
-	@ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
-	private Set<Human> humans;
+//	@ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
+//	private Set<Human> humans;
 
 	/**
 	 * Constructor
@@ -46,13 +46,13 @@ public class Skill {
 	 * Methods
 	 */
 	
-	public void addHuman(Human human){
-		human.addSkill(this);
-	}
-	
-	public void removeHuman(Human human){
-		human.removeSkill(this);
-	}
+//	public void addHuman(Human human){
+//		human.addSkill(this);
+//	}
+//	
+//	public void removeHuman(Human human){
+//		human.removeSkill(this);
+//	}
 	
 	/**
 	 * Getter and Setter
@@ -66,13 +66,13 @@ public class Skill {
 		this.name = name;
 	}
 
-	public Set<Human> getHumans() {
-		return humans;
-	}
-
-	public void setHumans(Set<Human> humans) {
-		this.humans = humans;
-	}
+//	public Set<Human> getHumans() {
+//		return humans;
+//	}
+//
+//	public void setHumans(Set<Human> humans) {
+//		this.humans = humans;
+//	}
 
 	public long getId() {
 		return id;

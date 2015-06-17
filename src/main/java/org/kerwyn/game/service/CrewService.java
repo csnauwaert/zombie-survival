@@ -7,5 +7,5 @@ import org.kerwyn.game.service.exception.ConfigurationException;
 public interface CrewService {
 	
 	Crew create(User user) throws NumberFormatException, ConfigurationException;
-
+	void delete(Crew crew);
 }
