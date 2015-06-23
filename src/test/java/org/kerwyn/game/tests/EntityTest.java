@@ -163,8 +163,25 @@ public class EntityTest {
 		assertTrue("Crew should not have a link to a deleted Human entity", crew.getHumans().contains(human));
 		assertEquals("Crew should not have a link to a deleted Human entity", 1, crew.getHumans().size());
 		//Now delete the crew and check that human has been deleted with it
+		//and check that user has not been deleted but reference to crew has been removed from user
 		crewRepository.delete(crew);
-		
+		assertEquals("Humans should have been deleted with Crew", 0, humanRepository.count());
+		assertTrue("User should have lost link to deleted Crew", user.getCrew().contains(crew2));
+		assertEquals("User should have lost link to deleted Crew", 1, user.getCrew().size());
+	}
+	
+	@Test
+	@Transactional
+	public void testDeleteUser() {
+		//Delete user and check that everything has been deleted with him except location and skills
+		userRepository.delete(user);
+		assertEquals("Authority should have been deleted with User", 0, authorityRepository.count());
+		assertEquals("Crews should have been deleted with User", 0, crewRepository.count());
+		assertEquals("Humans should have been deleted with User", 0, humanRepository.count());
+		assertEquals("Location should have not been deleted with User", 1, locationRepository.count());
+		assertEquals("Skills should have not been deletes with User", 2, skillRepository.count());
+		assertEquals("Skills should have lost human reference", 0, skill.getHumans().size());
+		assertEquals("Skills should have lost human reference", 0, skill2.getHumans().size());
 	}
 
 }

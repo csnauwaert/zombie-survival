@@ -71,4 +71,8 @@ public class Crew extends AbstractEntity {
 		if (!this.destroy)
 			this.humans.remove(human);
 	}
+	
+	protected void hookPreRemove() {
+		this.user.removeCrew(this);
+	}
 }
