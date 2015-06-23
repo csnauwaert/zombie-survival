@@ -6,9 +6,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,12 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "LOCATIONS")
-public class Location {
-
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+public class Location extends AbstractEntity {
 
 	/** The coordinate in a format x:y. */
 	@Column(nullable = false)
@@ -60,10 +52,6 @@ public class Location {
 	/**
 	 * Getter and Setter
 	 */
-	
-	public long getId() {
-		return id;
-	}
 
 	public String getCoordinate() {
 		return coordinate;

@@ -5,34 +5,13 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
-
-import org.kerwyn.game.controllers.View;
-
-import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "CREWS")
-public class Crew {
-	
-	/**
-	 * Set as true when entity is planned for destroy, that
-	 * way we can prevent concurrent model update from other entities
-	 * which might also be marked as deleted and trying to remove their
-	 * reference to this entity (especially the case with orphanremoval = true)
-	 */
-	boolean destroy;
-
-	@Id
-	@JsonView({View.UserBasicView.class, View.CrewBasicView.class})
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Crew extends AbstractEntity {
 
 	@ManyToOne(optional = false)
 	private User user;
@@ -50,10 +29,8 @@ public class Crew {
 	
 	protected Crew() {}
 
-
 	public Crew(User user) {
 		super();
-		this.destroy = false;
 		this.user = user;
 		this.humans = new HashSet<Human>();
 		this.locationTime = new HashSet<LocationTime>();
@@ -63,27 +40,19 @@ public class Crew {
 	/**
 	 * The Getter and Setter
 	 */
-	
-	public Long getId() {
-		return id;
-	}
-
 
 	public User getUser() {
 		return user;
 	}
 
-
 	public Set<Human> getHumans() {
 		return humans;
 	}
-	
 
 	public void setHumans(Set<Human> humans) {
 		if (!this.destroy)
 			this.humans = humans;
 	}
-
 
 	public Set<LocationTime> getLocationTimes() {
 		return locationTime;
@@ -102,10 +71,4 @@ public class Crew {
 		if (!this.destroy)
 			this.humans.remove(human);
 	}
-	
-	@PreRemove
-	private void preRemove() {
-		this.destroy = true;
-	}
-
 }

@@ -6,20 +6,13 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "LOCATION_TIME")
-public class LocationTime {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+public class LocationTime extends AbstractEntity {
 
 	@ManyToOne(optional = false)
 	private Crew crew;
@@ -58,10 +51,6 @@ public class LocationTime {
 	/**
 	 * The Getter and Setter
 	 */
-
-	public long getId() {
-		return id;
-	}
 
 	public Crew getCrew() {
 		return crew;

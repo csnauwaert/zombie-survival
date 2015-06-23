@@ -2,19 +2,12 @@ package org.kerwyn.game.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "AUTHORITIES")
-public class Authority {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Authority extends AbstractEntity {
 
 	@Column(nullable = false)
 	private String username;
@@ -48,10 +41,6 @@ public class Authority {
 
 	public void setAuthority(String authority) {
 		this.authority = authority;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getUsername() {

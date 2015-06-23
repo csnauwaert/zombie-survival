@@ -4,9 +4,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -15,12 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "JOBS")
-public class Job {
-
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+public class Job extends AbstractEntity {
 
 	/** The name. */
 	@Column
@@ -159,27 +151,4 @@ public class Job {
 	public void setLoot(Set<Loot> loot) {
 		this.loot = loot;
 	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Job [id=" + id + ", name=" + name + ", humans=" + humans
-				+ ", baseTime=" + baseTime + ", baseChanceSuccess="
-				+ baseChanceSuccess + ", baseChanceEncounter="
-				+ baseChanceEncounter + ", loot=" + loot + "]";
-	}
-
 }

@@ -4,9 +4,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,12 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ZOMBIES")
-public class Zombie {
-
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Zombie extends AbstractEntity {
 
 	/** The location. */
 	@ManyToOne(optional = false, targetEntity = Location.class)
@@ -90,26 +82,6 @@ public class Zombie {
 	 */
 	public void setLocationTime(Set<LocationTime> locationTimes) {
 		this.locationTimes = locationTimes;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Zombie [id=" + id + ", location=" + location + ", number="
-				+ number + ", locationTimes=" + locationTimes + "]";
 	}
 
 }

@@ -6,35 +6,17 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
-
-//import org.hibernate.annotations.CascadeType;
 
 
 @Entity
 @Table(name = "HUMANS")
-public class Human {
-
-	/**
-	 * Set as true when entity is planned for destroy, that
-	 * way we can prevent concurrent model update from other entities
-	 * which might also be marked as deleted and trying to remove their
-	 * reference to this entity (especially the case with orphanremoval = true)
-	 */
-	boolean destroy;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Human extends AbstractEntity {
 
 	@Column(nullable = false)
 	private String name;
@@ -84,6 +66,7 @@ public class Human {
 	@OneToMany()
 	private Set<Loot> loots;
 	
+	
 	/**
 	 * Constructor
 	 */
@@ -94,7 +77,6 @@ public class Human {
 
 	public Human(String name, Crew crew, Location loc) {
 		super();
-		this.destroy = false;
 		this.name = name;
 		this.crew = crew;
 		this.location = loc;
@@ -116,23 +98,16 @@ public class Human {
 		//prevent modifying skill set if we are deleting entity
 		if (!this.destroy && this.skills.remove(skill))
 			skill.removeHuman(this);
-		//If we are destroying entity, ensure that link on skill has been removed
-		if (this.destroy)
-			skill.removeHuman(this);
 	}
 	
-	@PreRemove
-	private void preRemove() {
-		this.destroy = true;
+	protected void hookPreRemove() {
 		//before deleting entity, remove all corresponding link in other entity
 		this.crew.removeHuman(this);
-		//copy list of humans to prevent concurrent update while iterating on the list
-		Set<Skill> copy_list = new HashSet<Skill>();
+		//Since this entity is planned to be destroyed and we can't change the reference
+		//on its object, we can safely remove reference on other entity without fear of
+		//concurrent update
 		for (Skill s: this.skills) {
-			copy_list.add(s);
-		}
-		for (Skill s: copy_list) {
-			removeSkill(s);
+			s.removeHuman(this);
 		}
 	}
 	
@@ -144,17 +119,13 @@ public class Human {
 		return crew;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public Set<Skill> getSkills() {
-		return skills;
-	}
-
 	public void setCrew(Crew crew) {
 		if (!this.destroy)
 			this.crew = crew;
+	}
+	
+	public Set<Skill> getSkills() {
+		return skills;
 	}
 
 	public void setSkills(Set<Skill> skills) {

@@ -6,11 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 /**
@@ -18,11 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "SKILLS")
-public class Skill {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+public class Skill extends AbstractEntity{
 
 	@Column(nullable = false)
 	private String name;
@@ -49,28 +41,22 @@ public class Skill {
 	 */
 	
 	public void addHuman(Human human){
-		if (this.humans.add(human))
+		if (!this.destroy && this.humans.add(human))
 			human.addSkill(this);
 	}
 	
 	public void removeHuman(Human human){
-		if (this.humans.remove(human))
+		// if entity is planned for destroy, ignore change to prevent concurrent update
+		if (!this.destroy && this.humans.remove(human))
 			human.removeSkill(this);
 	}
 	
-	@PreRemove
-	private void preRemove() {
+	protected void hookPreRemove() {
 		//before deleting entity, remove all corresponding link in other entity
-		//copy list of humans to prevent concurrent update while iterating on the list
-		Set<Human> copy_list = new HashSet<Human>();
 		for (Human h: this.humans) {
-			copy_list.add(h);
-		}
-		for (Human h: copy_list) {
-			removeHuman(h);
+			h.removeSkill(this);
 		}
 	}
-	
 	
 	/**
 	 * Getter and Setter
@@ -90,10 +76,6 @@ public class Skill {
 
 	public void setHumans(Set<Human> humans) {
 		this.humans = humans;
-	}
-
-	public long getId() {
-		return id;
 	}
 
 }

@@ -2,9 +2,6 @@ package org.kerwyn.game.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -14,12 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="LOOTS")
-public class Loot {
-	
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+public class Loot extends AbstractEntity {
 	
 	/** The name. */
 	@Column
@@ -90,22 +82,4 @@ public class Loot {
 		this.ownership = ownership;
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Loot [id=" + id + ", name=" + name + ", number=" + number
-				+ ", ownership=" + ownership + "]";
-	}
-	
 }

@@ -6,9 +6,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -19,11 +16,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "USERS")
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class User extends AbstractEntity {
 
 	/** The login. */
 	@JsonView(View.UserBasicView.class)
@@ -103,11 +96,8 @@ public class User {
 	}
 
 	public void setCrew(Set<Crew> crew) {
-		this.crew = crew;
-	}
-
-	public Long getId() {
-		return id;
+		if (!this.destroy)
+			this.crew = crew;
 	}
 	
 	public Authority getAuthority() {
@@ -115,7 +105,8 @@ public class User {
 	}
 	
 	public void setAuthority(Authority authority) {
-		this.authority = authority;
+		if (!this.destroy)
+			this.authority = authority;
 	}
 	
 	/***
@@ -123,10 +114,12 @@ public class User {
 	 */
 
 	public void addCrew(Crew crew) {
-		this.crew.add(crew);
+		if (!this.destroy)
+			this.crew.add(crew);
 	}
 	
 	public void removeCrew(Crew crew) {
-		this.crew.remove(crew);
+		if (!this.destroy)
+			this.crew.remove(crew);
 	}
 }
