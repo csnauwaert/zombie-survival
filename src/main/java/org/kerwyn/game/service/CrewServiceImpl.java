@@ -10,9 +10,12 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.kerwyn.game.config.Config;
 import org.kerwyn.game.entities.Crew;
+import org.kerwyn.game.entities.Human;
 import org.kerwyn.game.entities.Location;
 import org.kerwyn.game.entities.User;
 import org.kerwyn.game.repositories.CrewRepository;
+import org.kerwyn.game.repositories.HumanRepository;
+import org.kerwyn.game.repositories.SkillRepository;
 import org.kerwyn.game.service.exception.ConfigurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -32,6 +35,12 @@ public class CrewServiceImpl implements CrewService {
 
 	@Autowired
 	private LocationService locationService;
+	
+	@Autowired
+	private HumanRepository humanRepository;
+	
+	@Autowired
+	private SkillRepository skillRepository;
 
 	@Autowired
 	private Environment env;

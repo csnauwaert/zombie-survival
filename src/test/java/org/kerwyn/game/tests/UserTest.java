@@ -7,7 +7,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kerwyn.game.Launcher;
 import org.kerwyn.game.entities.User;
+import org.kerwyn.game.repositories.AuthorityRepository;
+import org.kerwyn.game.repositories.CrewRepository;
+import org.kerwyn.game.repositories.HumanRepository;
 import org.kerwyn.game.repositories.LocationRepository;
+import org.kerwyn.game.repositories.SkillRepository;
 import org.kerwyn.game.repositories.UserRepository;
 import org.kerwyn.game.service.LocationService;
 import org.kerwyn.game.service.UserService;
@@ -39,6 +43,18 @@ public class UserTest {
 	@Autowired
 	private LocationRepository locationRepository;
 	
+	@Autowired
+	private SkillRepository skillRepository;
+	
+	@Autowired
+	private HumanRepository humanRepository;
+	
+	@Autowired
+	private CrewRepository crewRepository;
+	
+	@Autowired
+	private AuthorityRepository authorityRepository;
+	
 	User admin;
 	User player;
 	
@@ -59,14 +75,18 @@ public class UserTest {
 	@After
 	public void tearDown() {
 		userRepository.deleteAll();
+		authorityRepository.deleteAll();
+		crewRepository.deleteAll();
+		humanRepository.deleteAll();
+		skillRepository.deleteAll();
 		locationRepository.deleteAll();
 	}
 	
 	@Test
 	public void TestChangeAuthLevel() {
 		//Verify that admin and user starts with the correct authority
-		assertEquals(admin.getAuthority().getAuthority(), "ROLE_ADMIN");
-		assertEquals(player.getAuthority().getAuthority(), "ROLE_USER");
+		assertEquals("Incorrect role for user admin", admin.getAuthority().getAuthority(), "ROLE_ADMIN");
+		assertEquals("Incorrect role for user player", player.getAuthority().getAuthority(), "ROLE_USER");
 		//User that is not admin should not be able to change its role or someone else role
 		try {
 			userService.change_auth_level(player, player, "TEST_ROLE");
@@ -74,14 +94,14 @@ public class UserTest {
 		try {
 			userService.change_auth_level(player, admin, "TEST_ROLE");
 		} catch (AuthorityLevelException e) {}
-		assertEquals(admin.getAuthority().getAuthority(), "ROLE_ADMIN");
-		assertEquals(player.getAuthority().getAuthority(), "ROLE_USER");
+		assertEquals("Admin role should not have been changed", admin.getAuthority().getAuthority(), "ROLE_ADMIN");
+		assertEquals("Player role should not have been changed", player.getAuthority().getAuthority(), "ROLE_USER");
 		//User with correct authority can change someone else role
 		userService.change_auth_level(admin, player, "ROLE_ADMIN");
-		assertEquals(player.getAuthority().getAuthority(), "ROLE_ADMIN");
+		assertEquals("Player role should have changed", player.getAuthority().getAuthority(), "ROLE_ADMIN");
 		//Newly user that has been granted authority can change it's own role
 		userService.change_auth_level(player, player, "ROLE_USER");
-		assertEquals(player.getAuthority().getAuthority(), "ROLE_USER");
+		assertEquals("Player role should have been changed", player.getAuthority().getAuthority(), "ROLE_USER");
 	}
 	
 	@Test
@@ -93,7 +113,7 @@ public class UserTest {
 			userService.create(existing_user);
 		} catch (UserAlreadyExistsException e) {}
 		//User should have not been created
-		assertEquals(userRepository.count(), count_users);
+		assertEquals("User should not have been created", userRepository.count(), count_users);
 	}
 
 }

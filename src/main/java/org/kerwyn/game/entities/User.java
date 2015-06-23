@@ -1,5 +1,6 @@
 package org.kerwyn.game.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -16,14 +17,10 @@ import org.kerwyn.game.controllers.View;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-/**
- * The Class User.
- */
 @Entity
 @Table(name = "USERS")
 public class User {
 
-	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,19 +30,17 @@ public class User {
 	@Column(nullable = false)
 	private String username;
 
-	/** The password. */
 	@Column(nullable = false)
 	private String password;
 
 	/** The status of user (active-inactive). */
+	/** Other player can not harm inactive player (that are on holidays for example) **/
 	@Column(nullable = false)
 	private Boolean enabled;
 
-	/** The pseudo. */
 	@Column(nullable = false)
 	private String pseudo;
 
-	/** The crew. */
 	@JsonView(View.UserBasicView.class)
 	@OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<Crew> crew;
@@ -56,8 +51,7 @@ public class User {
 	/**
 	 * Instantiates a new user.
 	 */
-	protected User() {
-	}
+	protected User() {}
 
 	public User(String username, String password, Boolean enabled, String pseudo) {
 		super();
@@ -65,6 +59,7 @@ public class User {
 		this.password = password;
 		this.enabled = enabled;
 		this.pseudo = pseudo;
+		this.crew = new HashSet<Crew>();
 	}
 	
 	/**
@@ -122,14 +117,16 @@ public class User {
 	public void setAuthority(Authority authority) {
 		this.authority = authority;
 	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password="
-				+ password + ", enabled=" + enabled + ", pseudo=" + pseudo
-				+ ", crew size=" + crew.size() + "]";
-	}
-
 	
+	/***
+	 * Methods
+	 */
 
+	public void addCrew(Crew crew) {
+		this.crew.add(crew);
+	}
+	
+	public void removeCrew(Crew crew) {
+		this.crew.remove(crew);
+	}
 }

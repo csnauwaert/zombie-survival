@@ -1,5 +1,6 @@
 package org.kerwyn.game.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -9,34 +10,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 import org.kerwyn.game.controllers.View;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-/**
- * The Class Crew.
- */
 @Entity
 @Table(name = "CREWS")
 public class Crew {
+	
+	/**
+	 * Set as true when entity is planned for destroy, that
+	 * way we can prevent concurrent model update from other entities
+	 * which might also be marked as deleted and trying to remove their
+	 * reference to this entity (especially the case with orphanremoval = true)
+	 */
+	boolean destroy;
 
-	/** The id. */
 	@Id
 	@JsonView({View.UserBasicView.class, View.CrewBasicView.class})
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	/** The user. */
 	@ManyToOne(optional = false)
 	private User user;
 
-	/** The humans. */
 	@OneToMany(mappedBy = "crew", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<Human> humans;
 
-	/** The location times. */
 	@OneToMany(mappedBy = "crew", orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<LocationTime> locationTime;
 
@@ -45,33 +48,16 @@ public class Crew {
 	 * Constructor
 	 */
 	
-	public Crew() {
-	}
+	protected Crew() {}
 
 
 	public Crew(User user) {
 		super();
+		this.destroy = false;
 		this.user = user;
-	}
-	
-	/**
-	 * Methods
-	 */
-	
-	public void addHuman(Human human) {
-		human.setCrew(this);
-	}
-	
-	public void removeHuman(Human human) {
-		human.removeCrew();
-	}
-	
-	public void addLocationTime(LocationTime loc) {
-		loc.setCrew(this);
-	}
-	
-	public void removeLocationTime(LocationTime loc) {
-		loc.removeCrew();
+		this.humans = new HashSet<Human>();
+		this.locationTime = new HashSet<LocationTime>();
+		user.addCrew(this);
 	}
 
 	/**
@@ -94,12 +80,32 @@ public class Crew {
 	
 
 	public void setHumans(Set<Human> humans) {
-		this.humans = humans;
+		if (!this.destroy)
+			this.humans = humans;
 	}
 
 
 	public Set<LocationTime> getLocationTimes() {
 		return locationTime;
+	}
+	
+	/**
+	 * The methods
+	 */
+	
+	public void addHuman(Human human) {
+		if (!this.destroy)
+			this.humans.add(human);
+	}
+	
+	public void removeHuman(Human human) {
+		if (!this.destroy)
+			this.humans.remove(human);
+	}
+	
+	@PreRemove
+	private void preRemove() {
+		this.destroy = true;
 	}
 
 }

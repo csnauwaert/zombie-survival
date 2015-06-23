@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "AUTHORITIES")
 public class Authority {
@@ -29,13 +28,14 @@ public class Authority {
 	/***
 	 * Constructor
 	 */
-	protected Authority() {
-	}
+	protected Authority() {}
 	
 	public Authority(User user, String authority) {
+		super();
 		this.username = user.getUsername();
 		this.authority = authority;
 		this.user = user;
+		//Bidirectional link between user and authority
 		user.setAuthority(this);
 	}
 	

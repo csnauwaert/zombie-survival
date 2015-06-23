@@ -1,5 +1,6 @@
 package org.kerwyn.game.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 /**
@@ -19,15 +21,14 @@ import javax.persistence.Table;
 public class Skill {
 
 	@Id
-	@Column(name = "SKILL_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column(nullable = false)
 	private String name;
 
-//	@ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
-//	private Set<Human> humans;
+	@ManyToMany(mappedBy = "skills", fetch = FetchType.LAZY)
+	private Set<Human> humans;
 
 	/**
 	 * Constructor
@@ -40,19 +41,36 @@ public class Skill {
 	public Skill(String name) {
 		super();
 		this.name = name;
+		this.humans = new HashSet<Human>();
 	}
 	
 	/**
 	 * Methods
 	 */
 	
-//	public void addHuman(Human human){
-//		human.addSkill(this);
-//	}
-//	
-//	public void removeHuman(Human human){
-//		human.removeSkill(this);
-//	}
+	public void addHuman(Human human){
+		if (this.humans.add(human))
+			human.addSkill(this);
+	}
+	
+	public void removeHuman(Human human){
+		if (this.humans.remove(human))
+			human.removeSkill(this);
+	}
+	
+	@PreRemove
+	private void preRemove() {
+		//before deleting entity, remove all corresponding link in other entity
+		//copy list of humans to prevent concurrent update while iterating on the list
+		Set<Human> copy_list = new HashSet<Human>();
+		for (Human h: this.humans) {
+			copy_list.add(h);
+		}
+		for (Human h: copy_list) {
+			removeHuman(h);
+		}
+	}
+	
 	
 	/**
 	 * Getter and Setter
@@ -66,13 +84,13 @@ public class Skill {
 		this.name = name;
 	}
 
-//	public Set<Human> getHumans() {
-//		return humans;
-//	}
-//
-//	public void setHumans(Set<Human> humans) {
-//		this.humans = humans;
-//	}
+	public Set<Human> getHumans() {
+		return humans;
+	}
+
+	public void setHumans(Set<Human> humans) {
+		this.humans = humans;
+	}
 
 	public long getId() {
 		return id;

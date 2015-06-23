@@ -39,3 +39,7 @@ war {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
 }
+
+test {
+	exclude "**/*Test.class"
+}
