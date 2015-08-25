@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.kerwyn.game.map.Map;
+
 /**
  * The Class Location.
  */
@@ -19,6 +21,12 @@ public class Location extends AbstractEntity {
 	/** The coordinate in a format x:y. */
 	@Column(nullable = false)
 	private String coordinate;
+	
+	@Column(nullable = false)
+	private int x;
+	
+	@Column(nullable = false)
+	private int y;
 	
 	/** The type of the tile example: 1:grass, 2:sand, ...*/
 	@Column(nullable = false)
@@ -47,6 +55,16 @@ public class Location extends AbstractEntity {
 	public Location(String coordinate, int tile_type){
 		this.coordinate = coordinate;
 		this.tile_type = tile_type;
+		int[] tempcoord = Map.convertCoord(coordinate);
+		this.x = tempcoord[0];
+		this.y = tempcoord[1];
+	}
+	
+	public Location(int x, int y, int tile_type) {
+		this.tile_type = tile_type;
+		this.x = x;
+		this.y = y;
+		this.coordinate = Map.convertCoord(x, y);
 	}
 
 	/**
@@ -67,6 +85,14 @@ public class Location extends AbstractEntity {
 
 	public Set<Building> getBuildings() {
 		return buildings;
+	}
+	
+	public int getX() {
+		return this.x;
+	}
+	
+	public int getY() {
+		return this.y;
 	}
 
 //	public Set<Human> getHumans() {

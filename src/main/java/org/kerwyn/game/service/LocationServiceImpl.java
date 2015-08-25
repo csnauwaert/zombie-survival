@@ -1,8 +1,14 @@
 package org.kerwyn.game.service;
 
+import java.io.File;
+import java.util.LinkedList;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.log4j.Logger;
+import org.kerwyn.game.config.Config;
 import org.kerwyn.game.entities.Human;
 import org.kerwyn.game.entities.Location;
 import org.kerwyn.game.entities.Loot;
@@ -11,6 +17,10 @@ import org.kerwyn.game.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 @Service
 public class LocationServiceImpl implements LocationService {
@@ -18,8 +28,11 @@ public class LocationServiceImpl implements LocationService {
 	@Autowired
 	private LocationRepository locationRepository;
 	
+	@Autowired
+	private Config config;
+
 	private Logger log = Logger.getLogger(LocationService.class);
-	
+
 	@Override
 	public Set<Loot> getLocationLoot(Location tile) {
 		// TODO Auto-generated method stub
@@ -58,7 +71,59 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 		return true;
-		
+
+	}
+
+	@Override
+	@Transactional
+	public boolean loadMap(String file) {
+		log.info("Loading map from file: "+file);
+		LinkedList<Location> locs = new LinkedList<Location>();
+		if (locationRepository.count() > 0){
+			log.info("Map already exists");
+			return false;
+		}
+		try {
+			File fXmlFile = new File(file);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+
+			doc.getDocumentElement().normalize();
+
+			NodeList nList = doc.getElementsByTagName("cell");
+
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+
+				Node nNode = nList.item(temp);
+
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+					Element eElement = (Element) nNode;
+					int x = Integer.parseInt(eElement.getAttribute("x"));
+					int y = Integer.parseInt(eElement.getAttribute("y"));
+					int type = Integer.parseInt(eElement.getElementsByTagName("type").item(0).getTextContent());
+
+					if (x < 0 || y <0){
+						log.error("Wrong value for 'x, y' coordinate in xml file: coordinate should not be negative");
+						log.error("Cell x,y coord given by xml are ("+x+","+y+")");
+						System.exit(0);
+					}
+					if (type < 0 || type > Integer.parseInt(config.get("tile.max_tile"))) {
+						log.error("Wrong value for 'type' in xml file, 'type' can't be negative or greater than "+Integer.parseInt(config.get("tile.max_tile")));
+						log.error("Check node whose x,y value are ("+x+","+y+")");
+						System.exit(0);
+					}
+
+					locs.add(new Location(x, y, type));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		locationRepository.save(locs);
+		log.info("Map has been successfully loaded");
+		return true;
 	}
 
 }

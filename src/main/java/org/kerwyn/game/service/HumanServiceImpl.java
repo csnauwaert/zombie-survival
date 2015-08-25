@@ -45,7 +45,7 @@ public class HumanServiceImpl implements HumanService {
 	@Override
 	@Transactional
 	public boolean change_crew(Human human, Crew crew) {
-		human.setCrew(crew);
+		human.changeCrew(crew);
 		return true;
 	}
 

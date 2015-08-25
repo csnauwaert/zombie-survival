@@ -1,6 +1,5 @@
 package org.kerwyn.game.service;
 
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,7 +9,6 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.kerwyn.game.config.Config;
 import org.kerwyn.game.entities.Crew;
-import org.kerwyn.game.entities.Human;
 import org.kerwyn.game.entities.Location;
 import org.kerwyn.game.entities.User;
 import org.kerwyn.game.repositories.CrewRepository;
@@ -50,12 +48,12 @@ public class CrewServiceImpl implements CrewService {
 
 	private Logger log = Logger.getLogger(CrewService.class);
 
-	@PersistenceContext
-	EntityManager entityManager;
-
-	protected Session getCurrentSession()  {
-		return entityManager.unwrap(Session.class);
-	}
+//	@PersistenceContext
+//	EntityManager entityManager;
+//
+//	protected Session getCurrentSession()  {
+//		return entityManager.unwrap(Session.class);
+//	}
 
 	@Override
 	@Transactional

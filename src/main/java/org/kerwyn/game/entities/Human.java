@@ -21,17 +21,32 @@ public class Human extends AbstractEntity {
 	@Column(nullable = false)
 	private String name;
 
-	@ManyToOne(optional = false)
+	@ManyToOne()
 	private Crew crew;
 	
 	@ManyToOne(optional = false)
 	private Location location;
 	
-	@Column
-	private Float currentFeedLevel;
+	@ManyToOne()
+	private Job awayJob;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="SKILL_HUMAN_REL",
+            joinColumns=
+            @JoinColumn(name="HUMAN_ID", referencedColumnName="ID"),
+      inverseJoinColumns=
+            @JoinColumn(name="SKILL_ID", referencedColumnName="ID")
+	)
+	private Set<Skill> skills;
+
+	@OneToMany()
+	private Set<Loot> inventory;
 	
 	@Column
-	private Float lastFeedLevel;
+	private Float currentFoodConsume;
+	
+	@Column
+	private Float lastFoodConsume;
 
 	@Column
 	private Boolean infected;
@@ -48,23 +63,29 @@ public class Human extends AbstractEntity {
 	@Column
 	private Float timeBeforeReturn;
 
-	@ManyToOne()
-	private Job awayJob;
-
 	@Column
 	private Float capacity;
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="SKILL_HUMAN_REL",
-            joinColumns=
-            @JoinColumn(name="HUMAN_ID", referencedColumnName="ID"),
-      inverseJoinColumns=
-            @JoinColumn(name="SKILL_ID", referencedColumnName="ID")
-	)
-	private Set<Skill> skills;
-
-	@OneToMany()
-	private Set<Loot> loots;
+	
+	@Column
+	private Float healerExp;
+	
+	@Column
+	private Float gunnerExp;
+	
+	@Column
+	private Float fighterExp;
+	
+	@Column
+	private Float recolterExp;
+	
+	@Column
+	private Float explorerExp;
+	
+	@Column
+	private Integer numberInjury;
+	
+	@Column
+	private Integer numberInjuryMax;
 	
 	
 	/**
@@ -102,7 +123,10 @@ public class Human extends AbstractEntity {
 	
 	protected void hookPreRemove() {
 		//before deleting entity, remove all corresponding link in other entity
-		this.crew.removeHuman(this);
+		if (this.crew != null) {
+			this.crew.removeHuman(this);
+		}
+			
 		//Since this entity is planned to be destroyed and we can't change the reference
 		//on its object, we can safely remove reference on other entity without fear of
 		//concurrent update
@@ -119,9 +143,21 @@ public class Human extends AbstractEntity {
 		return crew;
 	}
 
-	public void setCrew(Crew crew) {
-		if (!this.destroy)
+	public void deleteCrew() {
+		if (!this.destroy) {
+			if (this.crew != null)
+				this.crew.removeHuman(this);
+			this.crew = null;
+		}
+	}
+	
+	public void changeCrew(Crew crew) {
+		if (!this.destroy) {
+			if (this.crew != null)
+				this.crew.removeHuman(this);
 			this.crew = crew;
+			crew.addHuman(this);
+		}
 	}
 	
 	public Set<Skill> getSkills() {

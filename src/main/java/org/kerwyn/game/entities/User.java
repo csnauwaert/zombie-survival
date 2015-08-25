@@ -1,14 +1,17 @@
 package org.kerwyn.game.entities;
 
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.kerwyn.game.controllers.View;
 
@@ -31,15 +34,15 @@ public class User extends AbstractEntity {
 	@Column(nullable = false)
 	private Boolean enabled;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar last_connection;
+	
 	@Column(nullable = false)
 	private String pseudo;
 
 	@JsonView(View.UserBasicView.class)
-	@OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private Set<Crew> crew;
-	
-	@OneToOne(mappedBy = "user", orphanRemoval = true)
-	private Authority authority;
 
 	/**
 	 * Instantiates a new user.
@@ -94,21 +97,15 @@ public class User extends AbstractEntity {
 	public Set<Crew> getCrew() {
 		return crew;
 	}
+	
+	public Calendar getLastConnection() {
+		return last_connection;
+	}
 
-	public void setCrew(Set<Crew> crew) {
-		if (!this.destroy)
-			this.crew = crew;
+	public void setLastConnection(Calendar lastConnection) {
+		this.last_connection = lastConnection;
 	}
-	
-	public Authority getAuthority() {
-		return this.authority;
-	}
-	
-	public void setAuthority(Authority authority) {
-		if (!this.destroy)
-			this.authority = authority;
-	}
-	
+
 	/***
 	 * Methods
 	 */
@@ -120,6 +117,7 @@ public class User extends AbstractEntity {
 	
 	public void removeCrew(Crew crew) {
 		if (!this.destroy)
-			this.crew.remove(crew);
+			if (this.crew.remove(crew))
+				crew.deleteCrew();
 	}
 }

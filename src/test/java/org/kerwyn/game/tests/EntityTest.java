@@ -2,7 +2,6 @@ package org.kerwyn.game.tests;
 
 import static org.junit.Assert.*;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -111,8 +110,8 @@ public class EntityTest {
 	
 	@After
 	public void tearDown() {
-		userRepository.deleteAll();
 		authorityRepository.deleteAll();
+		userRepository.deleteAll();
 		crewRepository.deleteAll();
 		humanRepository.deleteAll();
 		skillRepository.deleteAll();
@@ -123,7 +122,6 @@ public class EntityTest {
 	public void testBiderectionalLink() {
 		//Test the one2one link between user and auth
 		assertNotNull("Link between Authority and User not correctly set", auth.getUser());
-		assertNotNull("Link between User and Authority not correctly set", user.getAuthority());
 		//Test the one2many link and many2one link between user and crew
 		assertTrue("Link between User and Crew not correctly set", user.getCrew().contains(crew));
 		assertTrue("Link between User and Crew not correctly set", user.getCrew().contains(crew2));
@@ -174,6 +172,7 @@ public class EntityTest {
 	@Transactional
 	public void testDeleteUser() {
 		//Delete user and check that everything has been deleted with him except location and skills
+		authorityRepository.delete(auth);
 		userRepository.delete(user);
 		assertEquals("Authority should have been deleted with User", 0, authorityRepository.count());
 		assertEquals("Crews should have been deleted with User", 0, crewRepository.count());
@@ -182,6 +181,37 @@ public class EntityTest {
 		assertEquals("Skills should have not been deletes with User", 2, skillRepository.count());
 		assertEquals("Skills should have lost human reference", 0, skill.getHumans().size());
 		assertEquals("Skills should have lost human reference", 0, skill2.getHumans().size());
+	}
+	
+	@Test
+	@Transactional
+	public void testRemoveRelation() {
+		//Remove relation between Human and Skill and check if relation has been removed
+		//both way
+		human.removeSkill(skill2);
+		assertFalse("Skill and Human should not be linked anymore", human.getSkills().contains(skill2));
+		assertFalse("Skill and Human should not be linked anymore", skill2.getHumans().contains(human));
+		assertTrue("This skill should not have been deleted", human.getSkills().contains(skill));
+		skill.removeHuman(human);
+		assertFalse("Skill and Human should not be linked anymore", human.getSkills().contains(skill));
+		assertFalse("Skill and Human should not be linked anymore", skill.getHumans().contains(human));
+		//Remove relation between Crew and Human and check if relation has been removed
+		//and human has not been deleted
+		crew.removeHuman(human2);
+		assertFalse("Human should have been removed from Crew relation", crew.getHumans().contains(human2));
+		assertEquals("Human should still exists", 2, humanRepository.count());
+		assertNull("Human should no longer have a crew", humanRepository.findOne(human2.getId()).getCrew());
+		
+	}
+	
+	@Test
+	@Transactional
+	public void testChangeHumanFromCrew() {
+		//Changing the crew of a human should not delete it
+		human2.changeCrew(crew2);
+		assertEquals("Human should not have been deleted", 2, humanRepository.count());
+		assertFalse("Human should have been removed from former Crew", crew.getHumans().contains(human2));
+		assertEquals("Human should have been removed from former Crew", crew2, human2.getCrew());
 	}
 
 }

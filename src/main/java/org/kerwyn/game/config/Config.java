@@ -29,6 +29,9 @@ public class Config {
 	@PostConstruct
 	public void init(){
 		properties_hashmap.put("crew.start_human", env.getProperty("crew.start_human"));
+		properties_hashmap.put("tile.max_tile", env.getProperty("tile.max_tile"));
+		properties_hashmap.put("admin.login", env.getProperty("admin.login"));
+		properties_hashmap.put("admin.password", env.getProperty("admin.password"));
 	}
 	
 	public String get(String properties) {

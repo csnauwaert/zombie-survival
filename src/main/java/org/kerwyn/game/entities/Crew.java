@@ -3,23 +3,26 @@ package org.kerwyn.game.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "CREWS")
 public class Crew extends AbstractEntity {
 
-	@ManyToOne(optional = false)
+	
+	@ManyToOne()
 	private User user;
 
-	@OneToMany(mappedBy = "crew", orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "crew", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Human> humans;
 
-	@OneToMany(mappedBy = "crew", orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "crew", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Set<LocationTime> locationTime;
 
 
@@ -43,6 +46,13 @@ public class Crew extends AbstractEntity {
 
 	public User getUser() {
 		return user;
+	}
+	
+	public void deleteCrew() {
+		if (!this.destroy) {
+			this.user.removeCrew(this);
+			this.user = null;
+		}
 	}
 
 	public Set<Human> getHumans() {
@@ -69,7 +79,8 @@ public class Crew extends AbstractEntity {
 	
 	public void removeHuman(Human human) {
 		if (!this.destroy)
-			this.humans.remove(human);
+			if (this.humans.remove(human))
+				human.deleteCrew();
 	}
 	
 	protected void hookPreRemove() {

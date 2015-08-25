@@ -2,12 +2,10 @@ package org.kerwyn.game;
 
 import javax.sql.DataSource;
 
-import org.kerwyn.game.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -25,17 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Launcher {
 	
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(Launcher.class, args);
-		LocationService locationService = context.getBean(LocationService.class);
-//		String test = context.getEnvironment().getProperty("spring.thymeleaf.cache");
-//		System.out.println(test);
-//		System.out.println("-------------------------------------------");
-		//Should pass an argument to state whether it should install
-		//basic features or just launch server.
-		//If install is passed, it should create the map, the admin user
-		//zombies, some basic loots locations, etc.
-		//Also should erase everything from the db is install is passed
-		locationService.createMap(10,10);
+		SpringApplication.run(Launcher.class, args);
 	}
 
 	@Configuration

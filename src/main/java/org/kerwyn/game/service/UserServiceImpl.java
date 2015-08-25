@@ -1,6 +1,7 @@
 package org.kerwyn.game.service;
 
 import org.apache.log4j.Logger;
+import org.kerwyn.game.config.Config;
 import org.kerwyn.game.entities.Authority;
 import org.kerwyn.game.entities.User;
 import org.kerwyn.game.repositories.AuthorityRepository;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private CrewService crewService;
 	
+	@Autowired
+	private Config config;
+	
 	private Logger log = Logger.getLogger(UserService.class);
 
 	@Override
@@ -31,8 +35,7 @@ public class UserServiceImpl implements UserService {
 	public User create(User user) {
 		log.info(String.format("Creating new user: %s", user.getUsername()));
 		
-		User existing_user = userRepository.findOneByUsername(user
-				.getUsername());
+		User existing_user = userRepository.findOneByUsername(user.getUsername());
 
 		if (existing_user != null || StringUtils.isEmpty(user.getUsername())
 				|| StringUtils.isEmpty(user.getPassword())) {
@@ -48,11 +51,27 @@ public class UserServiceImpl implements UserService {
 		return user;
 
 	}
+	
+	@Override
+	@Transactional
+	public User createAdmin() {
+		log.info("Creating admin user");
+		if (userRepository.count() > 0){
+			log.info("Admin user already exists!");
+			return null;
+		}
+		User admin = this.create(new User(config.get("admin.login"), config.get("admin.password"), true, "Admin"));
+		authorityRepository.findOneByUser(admin).setAuthority("ROLE_ADMIN");
+		log.info("Admin user has been created");
+		return admin;
+	}
 
 	@Override
 	@Transactional
 	public void delete(User user) {
 		log.info(String.format("Deleting user: %s", user.getUsername()));
+		Authority auth = authorityRepository.findOneByUser(user);
+		authorityRepository.delete(auth);
 		userRepository.delete(user.getId());
 	}
 
@@ -66,9 +85,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void change_auth_level(User executor, User user, String auth_level) {
-		Authority player_auth = user.getAuthority();
-		Authority executor_auth = executor.getAuthority();
+	public Boolean changeAuthLevel(User executor, User user, String auth_level) {
+		Authority player_auth = authorityRepository.findOneByUser(user);
+		Authority executor_auth = authorityRepository.findOneByUsername(executor.getUsername());
 		if (!executor_auth.canChangeAuthLevel()){
 			log.info(String.format("User '%s' has attempted to change player '%s' auth_level " +
 					"from '%s' to '%s', but is not allowed to!", executor.getUsername(),
@@ -81,11 +100,12 @@ public class UserServiceImpl implements UserService {
 				player_auth.getAuthority(),
 				auth_level));
 		player_auth.setAuthority(auth_level);
+		return true;
 	}
 
 	@Override
 	@Transactional
-	public User change_password(User user, String old_password,
+	public User changePassword(User user, String old_password,
 			String new_password) {
 		if (user.getPassword().equals(old_password)){
 			log.info(String.format("Changing password of player '%s'", user.getUsername()));
@@ -100,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public User change_pseudo(User user, String new_pseudo) {
+	public User changePseudo(User user, String new_pseudo) {
 		log.info(String.format("Changing player '%s' username from '%s' to '%s'", 
 				user.getUsername(), user.getPseudo(), new_pseudo));
 		user.setPseudo(new_pseudo);

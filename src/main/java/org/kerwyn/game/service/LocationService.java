@@ -12,5 +12,6 @@ public interface LocationService {
 	public Set<Human> getLocationHuman(Location tile);
 	public Location findEmptyLocation();
 	public boolean createMap(int width, int height);
+	public boolean loadMap(String file);
 
 }

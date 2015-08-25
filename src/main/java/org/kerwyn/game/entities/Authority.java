@@ -28,8 +28,6 @@ public class Authority extends AbstractEntity {
 		this.username = user.getUsername();
 		this.authority = authority;
 		this.user = user;
-		//Bidirectional link between user and authority
-		user.setAuthority(this);
 	}
 	
 	/***

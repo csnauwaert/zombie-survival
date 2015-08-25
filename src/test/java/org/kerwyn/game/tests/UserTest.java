@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kerwyn.game.Launcher;
+import org.kerwyn.game.entities.Authority;
 import org.kerwyn.game.entities.User;
 import org.kerwyn.game.repositories.AuthorityRepository;
 import org.kerwyn.game.repositories.CrewRepository;
@@ -56,26 +57,31 @@ public class UserTest {
 	private AuthorityRepository authorityRepository;
 	
 	User admin;
+	Authority admin_auth;
 	User player;
+	Authority player_auth;
 	
 	@Before
     public void setUp() {
 		//Create map
-		locationService.createMap(10, 10);
+		locationService.loadMap("map.xml");
         //create admin user
-        admin = new User("admin","pwd",true,"administrator");
+        admin = new User("administrator","pwd",true,"administrator");
         admin = userService.create(admin);
         //give admin authority role
-        admin.getAuthority().setAuthority("ROLE_ADMIN");
+        admin_auth = authorityRepository.findOneByUser(admin);
+        admin_auth.setAuthority("ROLE_ADMIN");
+        authorityRepository.save(admin_auth);
         //create player user
         player = new User("player", "pwd", true, "TestPlayer");
         player = userService.create(player);
+        player_auth = authorityRepository.findOneByUser(player);
     }
 	
 	@After
 	public void tearDown() {
-		userRepository.deleteAll();
 		authorityRepository.deleteAll();
+		userRepository.deleteAll();
 		crewRepository.deleteAll();
 		humanRepository.deleteAll();
 		skillRepository.deleteAll();
@@ -85,30 +91,30 @@ public class UserTest {
 	@Test
 	public void TestChangeAuthLevel() {
 		//Verify that admin and user starts with the correct authority
-		assertEquals("Incorrect role for user admin", admin.getAuthority().getAuthority(), "ROLE_ADMIN");
-		assertEquals("Incorrect role for user player", player.getAuthority().getAuthority(), "ROLE_USER");
+		assertEquals("Incorrect role for user admin", "ROLE_ADMIN", authorityRepository.findOneByUser(admin).getAuthority());
+		assertEquals("Incorrect role for user player", "ROLE_USER", authorityRepository.findOneByUser(player).getAuthority());
 		//User that is not admin should not be able to change its role or someone else role
 		try {
-			userService.change_auth_level(player, player, "TEST_ROLE");
+			userService.changeAuthLevel(player, player, "TEST_ROLE");
 		} catch (AuthorityLevelException e) {}
 		try {
-			userService.change_auth_level(player, admin, "TEST_ROLE");
+			userService.changeAuthLevel(player, admin, "TEST_ROLE");
 		} catch (AuthorityLevelException e) {}
-		assertEquals("Admin role should not have been changed", admin.getAuthority().getAuthority(), "ROLE_ADMIN");
-		assertEquals("Player role should not have been changed", player.getAuthority().getAuthority(), "ROLE_USER");
+		assertEquals("Admin role should not have been changed", "ROLE_ADMIN", admin_auth.getAuthority());
+		assertEquals("Player role should not have been changed", "ROLE_USER", player_auth.getAuthority());
 		//User with correct authority can change someone else role
-		userService.change_auth_level(admin, player, "ROLE_ADMIN");
-		assertEquals("Player role should have changed", player.getAuthority().getAuthority(), "ROLE_ADMIN");
+		userService.changeAuthLevel(admin, player, "ROLE_ADMIN");
+		assertEquals("Player role should have changed", "ROLE_ADMIN", authorityRepository.findOneByUser(player).getAuthority());
 		//Newly user that has been granted authority can change it's own role
-		userService.change_auth_level(player, player, "ROLE_USER");
-		assertEquals("Player role should have been changed", player.getAuthority().getAuthority(), "ROLE_USER");
+		userService.changeAuthLevel(player, player, "ROLE_USER");
+		assertEquals("Player role should have been changed", "ROLE_USER", authorityRepository.findOneByUser(player).getAuthority());
 	}
 	
 	@Test
 	public void TestCreateExistingUser() {
 		long count_users = userRepository.count();
 		//Try creating a user with a name that already exists
-		User existing_user = new User("admin", "somepwd", true, "TrueAdmin");
+		User existing_user = new User("administrator", "somepwd", true, "TrueAdmin");
 		try {
 			userService.create(existing_user);
 		} catch (UserAlreadyExistsException e) {}
