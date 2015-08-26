@@ -104,6 +104,8 @@ public class Human extends AbstractEntity {
 		this.skills = new HashSet<Skill>();
 		//bidirectional link between crew and human
 		crew.addHuman(this);
+		//bidirectional link between human and location
+		loc.addHuman(this);
 	}
 	
 	/**
@@ -133,6 +135,7 @@ public class Human extends AbstractEntity {
 		for (Skill s: this.skills) {
 			s.removeHuman(this);
 		}
+		this.setLocation(null);
 	}
 	
 	/**
@@ -168,5 +171,19 @@ public class Human extends AbstractEntity {
 		if (!this.destroy)
 			this.skills = skills;
 	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location.removeHuman(this);
+		if (!this.destroy) {
+			this.location = location;
+			location.addHuman(this);
+		}
+	}
+	
+	
 
 }

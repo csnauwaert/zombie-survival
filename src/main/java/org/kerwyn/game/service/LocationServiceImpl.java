@@ -2,6 +2,8 @@ package org.kerwyn.game.service;
 
 import java.io.File;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -47,9 +49,18 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public Location findEmptyLocation() {
-		// TODO Auto-generated method stub
-		// Should be fixed to find a correct empty location, for now return tile at 1-1
-		return locationRepository.findOneByCoordinate(Map.convertCoord(1, 1));
+		for (int i = 0; i<2; i++){
+			log.info("iteration : "+i);
+			List<Location> empty_locs = locationRepository.findBycountHuman(i);
+			if (empty_locs.size() > 0){
+				Random rand = new Random();
+				int r_index = rand.nextInt(empty_locs.size());
+				return empty_locs.get(r_index);
+			}
+		}
+		//TODO throw Exception here since we did not find any tile with less than 2
+		//humans, which means that server is probably overpopulated.
+		return null;
 	}
 
 	@Override

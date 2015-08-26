@@ -1,5 +1,7 @@
 package org.kerwyn.game.repositories;
 
+import java.util.List;
+
 import org.kerwyn.game.entities.Location;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -26,5 +28,7 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
 	 * @return the long
 	 */
 	Long countByCoordinate(String coordinate);
+	
+	List<Location> findBycountHuman(int count);
 
 }

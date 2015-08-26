@@ -1,5 +1,6 @@
 package org.kerwyn.game.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,29 +24,32 @@ public class Location extends AbstractEntity {
 	private String coordinate;
 	
 	@Column(nullable = false)
-	private int x;
+	private Integer x;
 	
 	@Column(nullable = false)
-	private int y;
+	private Integer y;
 	
 	/** The type of the tile example: 1:grass, 2:sand, ...*/
 	@Column(nullable = false)
-	private int tile_type;
+	private Integer tile_type;
 
 	/** The loots. */
-	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Loot.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Loot.class, fetch = FetchType.LAZY)
 	private Set<Loot> loots;
 
 	/** The building. */
-	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Building.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Building.class, fetch = FetchType.LAZY)
 	private Set<Building> buildings;
 
 	/** The humans. */
-//	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Human.class, fetch = FetchType.EAGER)
-//	private Set<Human> humans;
+	@OneToMany(mappedBy = "location", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Human> humans;
+	
+	@Column()
+	private Integer countHuman;
 
 	/** The zombies. */
-	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Zombie.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Zombie.class, fetch = FetchType.LAZY)
 	private Set<Zombie> zombies;
 
 	public Location(){
@@ -58,6 +62,8 @@ public class Location extends AbstractEntity {
 		int[] tempcoord = Map.convertCoord(coordinate);
 		this.x = tempcoord[0];
 		this.y = tempcoord[1];
+		this.countHuman = 0;
+		this.humans = new HashSet<Human>();
 	}
 	
 	public Location(int x, int y, int tile_type) {
@@ -65,6 +71,8 @@ public class Location extends AbstractEntity {
 		this.x = x;
 		this.y = y;
 		this.coordinate = Map.convertCoord(x, y);
+		this.countHuman = 0;
+		this.humans = new HashSet<Human>();
 	}
 
 	/**
@@ -95,11 +103,37 @@ public class Location extends AbstractEntity {
 		return this.y;
 	}
 
-//	public Set<Human> getHumans() {
-//		return humans;
-//	}
+	public Set<Human> getHumans() {
+		return humans;
+	}
 
 	public Set<Zombie> getZombies() {
 		return zombies;
+	}
+	
+	/**
+	 * Methods
+	 */
+	
+	public void addHuman(Human human) {
+		if (!this.destroy && !this.humans.contains(human)) {
+			if (human.getLocation() != this){
+				human.setLocation(this);
+			}
+			this.humans.add(human);
+			this.countHuman += 1;
+			
+		}
+	}
+	
+	public void removeHuman(Human human) {
+		if (!this.destroy && this.humans.contains(human)) {
+			this.humans.remove(human);
+			this.countHuman -= 1;
+		}
+	}
+	
+	public Integer getCountHuman(){
+		return this.countHuman;
 	}
 }
