@@ -73,14 +73,24 @@ public class Crew extends AbstractEntity {
 	 */
 	
 	public void addHuman(Human human) {
-		if (!this.destroy)
+		if (!this.destroy && !this.humans.contains(human)) {
 			this.humans.add(human);
+			if (human.getCrew() != this)
+				human.setCrew(this);
+		}
+			
 	}
 	
+	/*
+	 * Important!
+	 * If we call this method from the code, always ensure that we have another
+	 * call to set the human on another crew or null.
+	 */
 	public void removeHuman(Human human) {
-		if (!this.destroy)
-			if (this.humans.remove(human))
-				human.deleteCrew();
+		if (!this.destroy && this.humans.contains(human)) {
+			this.humans.remove(human);
+			
+		}
 	}
 	
 	protected void hookPreRemove() {

@@ -126,6 +126,11 @@ public class Location extends AbstractEntity {
 		}
 	}
 	
+	/*
+	 * Important!
+	 * If we call this method from the code, always ensure that we have another
+	 * call to set the human on another location.
+	 */
 	public void removeHuman(Human human) {
 		if (!this.destroy && this.humans.contains(human)) {
 			this.humans.remove(human);

@@ -43,10 +43,10 @@ public class Human extends AbstractEntity {
 	private Set<Loot> inventory;
 	
 	@Column
-	private Float currentFoodConsume;
+	private Integer currentFoodConsume;
 	
 	@Column
-	private Float lastFoodConsume;
+	private Integer lastFoodConsume;
 
 	@Column
 	private Boolean infected;
@@ -55,38 +55,40 @@ public class Human extends AbstractEntity {
 	private Boolean dead;
 
 	@Column
-	private Float timeBeforeTurning;
+	private Long timeBeforeTurning;
 
 	@Column
 	private Boolean away;
 
 	@Column
-	private Float timeBeforeReturn;
+	private Long timeBeforeReturn;
 
 	@Column
-	private Float capacity;
+	private Integer capacity;
 	
 	@Column
-	private Float healerExp;
+	private Long healerExp;
 	
 	@Column
-	private Float gunnerExp;
+	private Long gunnerExp;
 	
 	@Column
-	private Float fighterExp;
+	private Long fighterExp;
 	
 	@Column
-	private Float recolterExp;
+	private Long recolterExp;
 	
 	@Column
-	private Float explorerExp;
+	private Long explorerExp;
+	
+	@Column
+	private Long builderExp;
 	
 	@Column
 	private Integer numberInjury;
 	
 	@Column
 	private Integer numberInjuryMax;
-	
 	
 	/**
 	 * Constructor
@@ -96,12 +98,28 @@ public class Human extends AbstractEntity {
 		super();
 	}
 
-	public Human(String name, Crew crew, Location loc) {
+	public Human(String name, Crew crew, Location loc, Boolean infected, 
+			int capacity, int currentfoodconsume, int numbermaxinjury) {
 		super();
 		this.name = name;
 		this.crew = crew;
 		this.location = loc;
 		this.skills = new HashSet<Skill>();
+		this.dead = false;
+		this.timeBeforeReturn = -1L;
+		this.timeBeforeTurning = -1L;
+		this.away = false;
+		this.numberInjury = 0;
+		this.infected = infected;
+		this.capacity = capacity;
+		this.currentFoodConsume = currentfoodconsume;
+		this.numberInjuryMax = numbermaxinjury;
+		this.healerExp = 0L;
+		this.gunnerExp = 0L;
+		this.fighterExp = 0L;
+		this.recolterExp = 0L;
+		this.explorerExp = 0L;
+		this.builderExp = 0L;
 		//bidirectional link between crew and human
 		crew.addHuman(this);
 		//bidirectional link between human and location
@@ -111,6 +129,16 @@ public class Human extends AbstractEntity {
 	/**
 	 * Method
 	 */
+	
+	public void setClassXP(Long healerExp, Long gunnerExp, Long fighterExp,
+			Long recolterExp, Long explorerExp, Long builderExp) {
+		this.healerExp = healerExp;
+		this.gunnerExp = gunnerExp;
+		this.fighterExp = fighterExp;
+		this.recolterExp = recolterExp;
+		this.explorerExp = explorerExp;
+		this.builderExp = builderExp;
+	}
 	
 	public void addSkill(Skill skill) {
 		if (!this.destroy && this.skills.add(skill))
@@ -125,9 +153,7 @@ public class Human extends AbstractEntity {
 	
 	protected void hookPreRemove() {
 		//before deleting entity, remove all corresponding link in other entity
-		if (this.crew != null) {
-			this.crew.removeHuman(this);
-		}
+		this.setCrew(null);
 			
 		//Since this entity is planned to be destroyed and we can't change the reference
 		//on its object, we can safely remove reference on other entity without fear of
@@ -145,21 +171,14 @@ public class Human extends AbstractEntity {
 	public Crew getCrew() {
 		return crew;
 	}
-
-	public void deleteCrew() {
-		if (!this.destroy) {
-			if (this.crew != null)
-				this.crew.removeHuman(this);
-			this.crew = null;
-		}
-	}
 	
-	public void changeCrew(Crew crew) {
+	public void setCrew(Crew crew) {
+		if (this.crew != null && crew != this.crew)
+			this.crew.removeHuman(this);
 		if (!this.destroy) {
-			if (this.crew != null)
-				this.crew.removeHuman(this);
 			this.crew = crew;
-			crew.addHuman(this);
+			if (crew != null)
+				crew.addHuman(this);
 		}
 	}
 	
@@ -183,7 +202,159 @@ public class Human extends AbstractEntity {
 			location.addHuman(this);
 		}
 	}
-	
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Job getAwayJob() {
+		return awayJob;
+	}
+
+	//TODO m2o to write correctly
+	public void setAwayJob(Job awayJob) {
+		this.awayJob = awayJob;
+	}
+
+	public Set<Loot> getInventory() {
+		return inventory;
+	}
+
+	//TODO o2m to write correctly
+	public void setInventory(Set<Loot> inventory) {
+		this.inventory = inventory;
+	}
+
+	public Integer getCurrentFoodConsume() {
+		return currentFoodConsume;
+	}
+
+	public void setCurrentFoodConsume(Integer currentFoodConsume) {
+		this.currentFoodConsume = currentFoodConsume;
+	}
+
+	public Integer getLastFoodConsume() {
+		return lastFoodConsume;
+	}
+
+	public void setLastFoodConsume(Integer lastFoodConsume) {
+		this.lastFoodConsume = lastFoodConsume;
+	}
+
+	public Boolean getInfected() {
+		return infected;
+	}
+
+	public void setInfected(Boolean infected) {
+		this.infected = infected;
+	}
+
+	public Boolean getDead() {
+		return dead;
+	}
+
+	public void setDead(Boolean dead) {
+		this.dead = dead;
+	}
+
+	public Long getTimeBeforeTurning() {
+		return timeBeforeTurning;
+	}
+
+	public void setTimeBeforeTurning(Long timeBeforeTurning) {
+		this.timeBeforeTurning = timeBeforeTurning;
+	}
+
+	public Boolean getAway() {
+		return away;
+	}
+
+	public void setAway(Boolean away) {
+		this.away = away;
+	}
+
+	public Long getTimeBeforeReturn() {
+		return timeBeforeReturn;
+	}
+
+	public void setTimeBeforeReturn(Long timeBeforeReturn) {
+		this.timeBeforeReturn = timeBeforeReturn;
+	}
+
+	public Integer getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
+	}
+
+	public Long getHealerExp() {
+		return healerExp;
+	}
+
+	public void setHealerExp(Long healerExp) {
+		this.healerExp = healerExp;
+	}
+
+	public Long getGunnerExp() {
+		return gunnerExp;
+	}
+
+	public void setGunnerExp(Long gunnerExp) {
+		this.gunnerExp = gunnerExp;
+	}
+
+	public Long getFighterExp() {
+		return fighterExp;
+	}
+
+	public void setFighterExp(Long fighterExp) {
+		this.fighterExp = fighterExp;
+	}
+
+	public Long getRecolterExp() {
+		return recolterExp;
+	}
+
+	public void setRecolterExp(Long recolterExp) {
+		this.recolterExp = recolterExp;
+	}
+
+	public Long getExplorerExp() {
+		return explorerExp;
+	}
+
+	public void setExplorerExp(Long explorerExp) {
+		this.explorerExp = explorerExp;
+	}
+
+	public Long getBuilderExp() {
+		return builderExp;
+	}
+
+	public void setBuilderExp(Long builderExp) {
+		this.builderExp = builderExp;
+	}
+
+	public Integer getNumberInjury() {
+		return numberInjury;
+	}
+
+	public void setNumberInjury(Integer numberInjury) {
+		this.numberInjury = numberInjury;
+	}
+
+	public Integer getNumberInjuryMax() {
+		return numberInjuryMax;
+	}
+
+	public void setNumberInjuryMax(Integer numberInjuryMax) {
+		this.numberInjuryMax = numberInjuryMax;
+	}
 
 }

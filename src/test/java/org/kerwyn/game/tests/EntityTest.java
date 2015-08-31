@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kerwyn.game.Launcher;
+import org.kerwyn.game.config.GameConfig;
 import org.kerwyn.game.entities.Authority;
 import org.kerwyn.game.entities.Crew;
 import org.kerwyn.game.entities.Human;
@@ -59,6 +60,9 @@ public class EntityTest {
 	@Autowired
 	private AuthorityRepository authorityRepository;
 	
+	@Autowired
+	private GameConfig config;
+	
 	User user;
 	Authority auth;
 	Crew crew;
@@ -92,7 +96,10 @@ public class EntityTest {
 		locationRepository.save(loc);
 		//Create a human and a skill, save the skill then assign it to human
 		//And save the human afterwards
-		human = new Human("TestHuman", crew, loc);
+		human = new Human("TestHuman", crew, loc, false,
+				config.getHumanStartCarryCapacity(),
+				config.getHumanStartConsumeFoodLevel(),
+				config.getHumanStartMaxNumberInjury());
 		skill = new Skill("TestSkill");
 		skillRepository.save(skill);
 		human.addSkill(skill);
@@ -102,7 +109,10 @@ public class EntityTest {
 		skillRepository.save(skill2);
 		skill2.addHuman(human);
 		//Create a secondary human
-		human2 = new Human("TestHuman2", crew, loc);
+		human2 = new Human("TestHuman2", crew, loc, false,
+				config.getHumanStartCarryCapacity(),
+				config.getHumanStartConsumeFoodLevel(),
+				config.getHumanStartMaxNumberInjury());
 		humanRepository.save(human2);
 		human2.addSkill(skill);
 		human2.addSkill(skill2);
@@ -197,6 +207,7 @@ public class EntityTest {
 		assertFalse("Skill and Human should not be linked anymore", skill.getHumans().contains(human));
 		//Remove relation between Crew and Human and check if relation has been removed
 		//and human has not been deleted
+		human2.setCrew(null);
 		crew.removeHuman(human2);
 		assertFalse("Human should have been removed from Crew relation", crew.getHumans().contains(human2));
 		assertEquals("Human should still exists", 2, humanRepository.count());
@@ -208,7 +219,7 @@ public class EntityTest {
 	@Transactional
 	public void testChangeHumanFromCrew() {
 		//Changing the crew of a human should not delete it
-		human2.changeCrew(crew2);
+		human2.setCrew(crew2);
 		assertEquals("Human should not have been deleted", 2, humanRepository.count());
 		assertFalse("Human should have been removed from former Crew", crew.getHumans().contains(human2));
 		assertEquals("Human should have been removed from former Crew", crew2, human2.getCrew());

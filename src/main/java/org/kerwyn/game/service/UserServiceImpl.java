@@ -1,7 +1,7 @@
 package org.kerwyn.game.service;
 
 import org.apache.log4j.Logger;
-import org.kerwyn.game.config.Config;
+import org.kerwyn.game.config.GameConfig;
 import org.kerwyn.game.entities.Authority;
 import org.kerwyn.game.entities.User;
 import org.kerwyn.game.repositories.AuthorityRepository;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 	private CrewService crewService;
 	
 	@Autowired
-	private Config config;
+	private GameConfig config;
 	
 	private Logger log = Logger.getLogger(UserService.class);
 
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 			log.info("Admin user already exists!");
 			return null;
 		}
-		User admin = this.create(new User(config.get("admin.login"), config.get("admin.password"), true, "Admin"));
+		User admin = this.create(new User(config.getAdminLogin(), config.getAdminPassword(), true, "Admin"));
 		authorityRepository.findOneByUser(admin).setAuthority("ROLE_ADMIN");
 		log.info("Admin user has been created");
 		return admin;

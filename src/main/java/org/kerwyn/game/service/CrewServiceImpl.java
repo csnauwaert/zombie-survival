@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.kerwyn.game.config.Config;
+import org.kerwyn.game.config.GameConfig;
 import org.kerwyn.game.entities.Crew;
 import org.kerwyn.game.entities.Location;
 import org.kerwyn.game.entities.User;
@@ -44,7 +44,7 @@ public class CrewServiceImpl implements CrewService {
 	private Environment env;
 
 	@Autowired
-	private Config config;
+	private GameConfig config;
 
 	private Logger log = Logger.getLogger(CrewService.class);
 
@@ -68,7 +68,7 @@ public class CrewServiceImpl implements CrewService {
 		Crew new_crew = crewRepository.save(new Crew(user));
 		//Should create humans, basic loot, etc
 		//Create basic human composing the crew
-		int start_human = Integer.parseInt(config.get("crew.start_human"));
+		int start_human = config.getCrewStartingHuman();
 		Location starting_point = locationService.findEmptyLocation();
 		log.debug(String.format("Starting point location at: %s", starting_point.getCoordinate()));
 		for (int i=0; i<start_human; i++){

@@ -10,7 +10,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
-import org.kerwyn.game.config.Config;
+import org.kerwyn.game.config.GameConfig;
 import org.kerwyn.game.entities.Human;
 import org.kerwyn.game.entities.Location;
 import org.kerwyn.game.entities.Loot;
@@ -31,7 +31,7 @@ public class LocationServiceImpl implements LocationService {
 	private LocationRepository locationRepository;
 	
 	@Autowired
-	private Config config;
+	private GameConfig config;
 
 	private Logger log = Logger.getLogger(LocationService.class);
 
@@ -50,7 +50,6 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public Location findEmptyLocation() {
 		for (int i = 0; i<2; i++){
-			log.info("iteration : "+i);
 			List<Location> empty_locs = locationRepository.findBycountHuman(i);
 			if (empty_locs.size() > 0){
 				Random rand = new Random();
@@ -120,8 +119,8 @@ public class LocationServiceImpl implements LocationService {
 						log.error("Cell x,y coord given by xml are ("+x+","+y+")");
 						System.exit(0);
 					}
-					if (type < 0 || type > Integer.parseInt(config.get("tile.max_tile"))) {
-						log.error("Wrong value for 'type' in xml file, 'type' can't be negative or greater than "+Integer.parseInt(config.get("tile.max_tile")));
+					if (type < 0 || type > config.getMaxTileType()) {
+						log.error("Wrong value for 'type' in xml file, 'type' can't be negative or greater than "+config.getMaxTileType());
 						log.error("Check node whose x,y value are ("+x+","+y+")");
 						System.exit(0);
 					}
