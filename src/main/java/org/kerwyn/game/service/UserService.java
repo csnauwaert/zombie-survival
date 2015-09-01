@@ -6,6 +6,7 @@ public interface UserService {
 
 	User create(User user);
 	User createAdmin();
+	User loginHook(User user);
 	void delete(User user);
 	void enable(User user, boolean enable);
 	Boolean changeAuthLevel(User executor, User user, String auth_level);

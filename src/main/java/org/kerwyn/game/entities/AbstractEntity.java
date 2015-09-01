@@ -7,6 +7,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PreRemove;
+import javax.persistence.Transient;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -17,6 +18,7 @@ abstract public class AbstractEntity {
 	 * way we can prevent concurrent model update from other entities
 	 * whom might try to remove their reference to this entity
 	 */
+	@Transient
 	boolean destroy;
 	
 	@Id

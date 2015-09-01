@@ -1,5 +1,6 @@
 package org.kerwyn.game.entities;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.kerwyn.game.controllers.View;
 
@@ -34,8 +33,8 @@ public class User extends AbstractEntity {
 	@Column(nullable = false)
 	private Boolean enabled;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar last_connection;
+	@Column()
+	private Timestamp last_connection;
 	
 	@Column(nullable = false)
 	private String pseudo;
@@ -98,11 +97,15 @@ public class User extends AbstractEntity {
 		return crew;
 	}
 	
-	public Calendar getLastConnection() {
-		return last_connection;
+	public Timestamp getLastConnection() {
+		return this.last_connection;
 	}
 
 	public void setLastConnection(Calendar lastConnection) {
+		this.last_connection = new Timestamp(lastConnection.getTimeInMillis());
+	}
+	
+	public void setLastConnection(Timestamp lastConnection) {
 		this.last_connection = lastConnection;
 	}
 

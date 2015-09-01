@@ -1,5 +1,7 @@
 package org.kerwyn.game.service;
 
+import java.sql.Timestamp;
+
 import org.apache.log4j.Logger;
 import org.kerwyn.game.config.GameConfig;
 import org.kerwyn.game.entities.Authority;
@@ -124,6 +126,18 @@ public class UserServiceImpl implements UserService {
 		log.info(String.format("Changing player '%s' username from '%s' to '%s'", 
 				user.getUsername(), user.getPseudo(), new_pseudo));
 		user.setPseudo(new_pseudo);
+		return user;
+	}
+
+	/**
+	 * Method used to write login date in db
+	 */
+	@Override
+	@Transactional
+	public User loginHook(User user) {
+		log.info(String.format("Updating user %s last connection", user.getUsername()));
+		Long cur_time = System.currentTimeMillis();
+		user.setLastConnection(new Timestamp(cur_time));
 		return user;
 	}
 
