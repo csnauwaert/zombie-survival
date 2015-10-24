@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import org.kerwyn.game.config.GameConfig;
 import org.kerwyn.game.entities.Human;
 import org.kerwyn.game.entities.Location;
-import org.kerwyn.game.entities.Loot;
+import org.kerwyn.game.entities.Item;
 import org.kerwyn.game.map.Map;
 import org.kerwyn.game.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 @Service
+@Transactional
 public class LocationServiceImpl implements LocationService {
 
 	@Autowired
@@ -36,7 +37,7 @@ public class LocationServiceImpl implements LocationService {
 	private Logger log = Logger.getLogger(LocationService.class);
 
 	@Override
-	public Set<Loot> getLocationLoot(Location tile) {
+	public Set<Item> getLocationLoot(Location tile) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -63,7 +64,6 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	@Transactional
 	public boolean createMap(int width, int height) {
 		//if we already has a record in location, that means that map exists
 		//so do nothing.
@@ -85,7 +85,6 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	@Transactional
 	public boolean loadMap(String file) {
 		log.info("Loading map from file: "+file);
 		LinkedList<Location> locs = new LinkedList<Location>();

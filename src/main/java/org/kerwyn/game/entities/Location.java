@@ -34,8 +34,8 @@ public class Location extends AbstractEntity {
 	private Integer tile_type;
 
 	/** The loots. */
-	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Loot.class, fetch = FetchType.LAZY)
-	private Set<Loot> loots;
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Item.class, fetch = FetchType.LAZY)
+	private Set<Item> loots;
 
 	/** The building. */
 	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, targetEntity = Building.class, fetch = FetchType.LAZY)
@@ -87,7 +87,7 @@ public class Location extends AbstractEntity {
 		return tile_type;
 	}
 
-	public Set<Loot> getLoots() {
+	public Set<Item> getLoots() {
 		return loots;
 	}
 

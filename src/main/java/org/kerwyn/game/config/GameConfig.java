@@ -20,6 +20,9 @@ public class GameConfig {
 	private int humanStartFood;
 	private int humanStartCarryCapacity;
 	private int humanStartMaxNumberInjury;
+	private int humanStartChanceInfected;
+	private int humanMinTimeBeforeTurning;
+	private int humanMaxTimeBeforeTurning;
 	
 	
 	/**
@@ -75,6 +78,23 @@ public class GameConfig {
 	public void setHumanStartMaxNumberInjury(int humanStartMaxNumberInjury) {
 		this.humanStartMaxNumberInjury = humanStartMaxNumberInjury;
 	}
-	
+	public int getHumanStartChanceInfected() {
+		return humanStartChanceInfected;
+	}
+	public void setHumanStartChanceInfected(int humanStartChanceInfected) {
+		this.humanStartChanceInfected = humanStartChanceInfected;
+	}
+	public int getHumanMinTimeBeforeTurning() {
+		return humanMinTimeBeforeTurning;
+	}
+	public void setHumanMinTimeBeforeTurning(int humanMinTimeBeforeTurning) {
+		this.humanMinTimeBeforeTurning = humanMinTimeBeforeTurning;
+	}
+	public int getHumanMaxTimeBeforeTurning() {
+		return humanMaxTimeBeforeTurning;
+	}
+	public void setHumanMaxTimeBeforeTurning(int humanMaxTimeBeforeTurning) {
+		this.humanMaxTimeBeforeTurning = humanMaxTimeBeforeTurning;
+	}
 
 }

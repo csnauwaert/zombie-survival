@@ -24,7 +24,7 @@ public class LocationTime extends AbstractEntity {
 	private Date explore_date;
 
 	@ManyToMany()
-	private Set<Loot> loots;
+	private Set<Item> loots;
 
 	@ManyToMany()
 	private Set<Building> buildings;
@@ -68,11 +68,11 @@ public class LocationTime extends AbstractEntity {
 		this.explore_date = explore_date;
 	}
 
-	public Collection<Loot> getLoots() {
+	public Collection<Item> getLoots() {
 		return loots;
 	}
 
-	public void setLoots(Set<Loot> loots) {
+	public void setLoots(Set<Item> loots) {
 		this.loots = loots;
 	}
 

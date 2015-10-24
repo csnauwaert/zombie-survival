@@ -1,7 +1,12 @@
 package org.kerwyn.game.service;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Random;
+
 import org.apache.log4j.Logger;
 import org.kerwyn.game.config.GameConfig;
+import org.kerwyn.game.config.Profession;
 import org.kerwyn.game.entities.Crew;
 import org.kerwyn.game.entities.Human;
 import org.kerwyn.game.entities.Location;
@@ -14,21 +19,22 @@ import org.springframework.validation.annotation.Validated;
 
 @Service
 @Validated
+@Transactional
 public class HumanServiceImpl implements HumanService {
 
 	@Autowired
 	private HumanRepository humanRepository;
-	
+
 	@Autowired
 	private SkillRepository skillRepository;
-	
+
 	@Autowired
 	private GameConfig config;
-	
+
 	private static int counter = 0;
-	
+
 	private Logger log = Logger.getLogger(HumanService.class);
-	
+
 	@Override
 	public Human create(Crew crew, Location loc) {
 		String name = "Human "+Integer.toString(counter);
@@ -39,28 +45,71 @@ public class HumanServiceImpl implements HumanService {
 				config.getHumanStartConsumeFoodLevel(),
 				config.getHumanStartMaxNumberInjury());
 		
-//		Skill skill = new Skill("Fireball");
-		
-//		human.addSkill(skill);
-//		humanRepository.save(human);
-//		skill.addHuman(human);
+		Random rand = new Random();
+		for (Profession profession : Profession.values()) {
+			this.addExperience(human, (long)rand.nextInt(20), profession);
+		}
+		if (rand.nextInt(config.getHumanStartChanceInfected()) == 0){
+			human.setInfected(true);
+			Long addMillis = (long)(rand.nextInt(config.getHumanMaxTimeBeforeTurning() - config.getHumanMinTimeBeforeTurning()) + config.getHumanMinTimeBeforeTurning())*1000;
+			Timestamp date_of_turning = new Timestamp(System.currentTimeMillis() + addMillis);
+			human.setTimeOfTurning(date_of_turning);
+		}
 		humanRepository.save(human);
-//		skillRepository.save(skill);
+		return human;
+	}
+
+	@Override
+	public Human addExperience(Human human, Long exp, Profession profession) {
+		Long new_xp = human.getExp(profession) + exp;
+		if (new_xp < 0) { new_xp = 0L; }
+		human.setExp(new_xp, profession);
+		//TODO call method to check if we need to add/remove skills
+		return human;
+	}
+	
+	@Override
+	public Human setExperience(Human human, Long exp, Profession profession) {
+		if (exp < 0) { exp = 0L; }
+		human.setExp(exp, profession);
+		//TODO call method to check if we need to add/remove skills
 		return human;
 	}
 
 	@Override
 	public void delete(Human human) {
-		// TODO Auto-generated method stub
-
+		humanRepository.delete(human);
 	}
-	
+
 	@Override
-	@Transactional
-	public boolean change_crew(Human human, Crew crew) {
+	public boolean changeCrew(Human human, Crew crew) {
 		human.setCrew(crew);
-		
 		return true;
 	}
+
+	@Override
+	public void checkTurning(Timestamp last_sync) {
+		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+		List<Human> humans_to_transform = humanRepository.findByTimeOfTurningBetween(last_sync, currentTime);
+		if (humans_to_transform.size() > 0) {
+			for (Human human : humans_to_transform) {
+				human.setDead(true);
+				//TODO Alert user (if human is not on a job) and check if transformed human attacks friendly unit
+			}
+		}
+	}
+
+	@Override
+	public void checkJobs(Timestamp last_sync) {
+		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+		List<Human> humans_to_return = humanRepository.findByTimeOfReturnBetween(last_sync, currentTime);
+		if (humans_to_return.size() > 0) {
+			for (Human human : humans_to_return) {
+				//TODO Alert user that human has returned from a job
+			}
+		}
+	}
+	
+	
 
 }

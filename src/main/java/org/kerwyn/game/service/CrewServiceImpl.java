@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Service
 @Validated
+@Transactional
 public class CrewServiceImpl implements CrewService {
 
 	@Autowired
@@ -56,7 +57,6 @@ public class CrewServiceImpl implements CrewService {
 //	}
 
 	@Override
-	@Transactional
 	public Crew create(User user) throws NumberFormatException, ConfigurationException {
 		//Create crew
 //		Session session = getCurrentSession();
@@ -79,7 +79,6 @@ public class CrewServiceImpl implements CrewService {
 	}
 
 	@Override
-	@Transactional
 	public void delete(Crew crew) {
 		log.info(String.format("Delete crew: %s", crew.getId()));
 		crewRepository.delete(crew.getId());

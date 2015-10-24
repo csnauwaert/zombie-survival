@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -33,7 +34,6 @@ public class UserServiceImpl implements UserService {
 	private Logger log = Logger.getLogger(UserService.class);
 
 	@Override
-	@Transactional
 	public User create(User user) {
 		log.info(String.format("Creating new user: %s", user.getUsername()));
 		
@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	@Transactional
 	public User createAdmin() {
 		log.info("Creating admin user");
 		if (userRepository.count() > 0){
@@ -69,7 +68,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
 	public void delete(User user) {
 		log.info(String.format("Deleting user: %s", user.getUsername()));
 		Authority auth = authorityRepository.findOneByUser(user);
@@ -78,7 +76,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
 	public void enable(User user, boolean enable) {
 		log.info(String.format("Change status of player '%s' to %s" +
 				" (true=active, false=inactive)", user.getUsername(), enable));
@@ -86,7 +83,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
 	public Boolean changeAuthLevel(User executor, User user, String auth_level) {
 		Authority player_auth = authorityRepository.findOneByUser(user);
 		Authority executor_auth = authorityRepository.findOneByUsername(executor.getUsername());
@@ -106,7 +102,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
 	public User changePassword(User user, String old_password,
 			String new_password) {
 		if (user.getPassword().equals(old_password)){
@@ -121,7 +116,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
 	public User changePseudo(User user, String new_pseudo) {
 		log.info(String.format("Changing player '%s' username from '%s' to '%s'", 
 				user.getUsername(), user.getPseudo(), new_pseudo));
@@ -133,7 +127,6 @@ public class UserServiceImpl implements UserService {
 	 * Method used to write login date in db
 	 */
 	@Override
-	@Transactional
 	public User loginHook(User user) {
 		log.info(String.format("Updating user %s last connection", user.getUsername()));
 		Long cur_time = System.currentTimeMillis();

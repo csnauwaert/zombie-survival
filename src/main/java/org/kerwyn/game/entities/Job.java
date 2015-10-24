@@ -35,8 +35,8 @@ public class Job extends AbstractEntity {
 	private Float baseChanceEncounter;
 
 	/** The loot. */
-	@OneToMany(targetEntity = Loot.class)
-	private Set<Loot> loot;
+	@OneToMany(targetEntity = Item.class)
+	private Set<Item> loot;
 
 	/**
 	 * Gets the name.
@@ -138,7 +138,7 @@ public class Job extends AbstractEntity {
 	 *
 	 * @return the loot
 	 */
-	public Set<Loot> getLoot() {
+	public Set<Item> getLoot() {
 		return loot;
 	}
 
@@ -148,7 +148,7 @@ public class Job extends AbstractEntity {
 	 * @param loot
 	 *            the new loot
 	 */
-	public void setLoot(Set<Loot> loot) {
+	public void setLoot(Set<Item> loot) {
 		this.loot = loot;
 	}
 }

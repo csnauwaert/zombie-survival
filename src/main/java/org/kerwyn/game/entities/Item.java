@@ -10,8 +10,8 @@ import javax.persistence.Table;
  * The Class Loot.
  */
 @Entity
-@Table(name="LOOTS")
-public class Loot extends AbstractEntity {
+@Table(name="ITEMS")
+public class Item extends AbstractEntity {
 	
 	/** The name. */
 	@Column
@@ -27,6 +27,9 @@ public class Loot extends AbstractEntity {
 	
 	@ManyToOne(optional = false, targetEntity = Location.class)
 	private Location location;
+	
+	@Column
+	private Boolean isEquipped;
 
 	/**
 	 * Gets the name.
