@@ -9,16 +9,15 @@ import org.kerwyn.game.config.GameConfig;
 import org.kerwyn.game.config.Profession;
 import org.kerwyn.game.entities.Crew;
 import org.kerwyn.game.entities.Human;
+import org.kerwyn.game.entities.Item;
 import org.kerwyn.game.entities.Location;
 import org.kerwyn.game.repositories.HumanRepository;
 import org.kerwyn.game.repositories.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 @Service
-@Validated
 @Transactional
 public class HumanServiceImpl implements HumanService {
 
@@ -27,6 +26,9 @@ public class HumanServiceImpl implements HumanService {
 
 	@Autowired
 	private SkillRepository skillRepository;
+	
+	@Autowired
+	private ItemService itemService;
 
 	@Autowired
 	private GameConfig config;
@@ -56,6 +58,7 @@ public class HumanServiceImpl implements HumanService {
 			human.setTimeOfTurning(date_of_turning);
 		}
 		humanRepository.save(human);
+		itemService.create("Food", config.getHumanStartFood(), loc, crew, human, false);
 		return human;
 	}
 
@@ -78,7 +81,7 @@ public class HumanServiceImpl implements HumanService {
 
 	@Override
 	public void delete(Human human) {
-		humanRepository.delete(human);
+		humanRepository.delete(human.getId());
 	}
 
 	@Override
@@ -93,7 +96,8 @@ public class HumanServiceImpl implements HumanService {
 		List<Human> humans_to_transform = humanRepository.findByTimeOfTurningBetween(last_sync, currentTime);
 		if (humans_to_transform.size() > 0) {
 			for (Human human : humans_to_transform) {
-				human.setDead(true);
+				die(human);
+				
 				//TODO Alert user (if human is not on a job) and check if transformed human attacks friendly unit
 			}
 		}
@@ -106,8 +110,66 @@ public class HumanServiceImpl implements HumanService {
 		if (humans_to_return.size() > 0) {
 			for (Human human : humans_to_return) {
 				//TODO Alert user that human has returned from a job
+				human.setAwayJob(null);
 			}
 		}
+	}
+
+	@Override
+	public Double getEfficiency(Human human) {
+		switch (human.getLastFoodConsume()) {
+		case 3:
+			return 1.0;
+		case 2:
+			return 0.75;
+		case 1:
+			return 0.35;
+		case 0:
+			return 0.1;
+		}
+		return 1.0;
+	}
+	
+	@Override
+	public void foodCron() {
+		//Consume food + Write currentFoodConsume in LastFoodConsume + check if user should die of hunger
+		//TODO optimize update since as it is, it will perform 2 updates per human (one for item qty and 
+		//	the other for humans lastfoodconsume,currentfoodconsume,nbrdayswithoutfood
+		List<Human> humans = humanRepository.findAllByDead(false);
+		for (Human human : humans) {
+			Item currentFood = itemService.findFoodInInventory(human);
+			if (currentFood != null){
+				if (human.getCurrentFoodConsume() > currentFood.getQuantity()) {
+					human.setCurrentFoodConsume(currentFood.getQuantity());
+				}
+				currentFood.setQuantity(currentFood.getQuantity() - human.getCurrentFoodConsume());
+				if (currentFood.getQuantity() == 0) {
+					itemService.delete(currentFood);
+				}
+			}
+			else {
+				human.setCurrentFoodConsume(0);
+			}
+			human.setLastFoodConsume(human.getCurrentFoodConsume());
+			if (human.getCurrentFoodConsume() == 0) {
+				human.setNbrDaysWithoutFood(human.getNbrDaysWithoutFood() +1);
+				if (human.getNbrDaysWithoutFood() == 3) {
+					die(human);
+				}
+			}
+			else {
+				human.setNbrDaysWithoutFood(0);
+			}
+			
+		}
+		 
+	}
+	
+	@Override
+	public void die(Human human) {
+		//TODO
+		log.info(String.format("Human died: %s", human.getId()));
+		human.setDead(true);
 	}
 	
 	

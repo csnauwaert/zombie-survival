@@ -5,84 +5,99 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 
 /**
  * The Class Loot.
  */
 @Entity
+@DynamicUpdate
 @Table(name="ITEMS")
 public class Item extends AbstractEntity {
 	
-	/** The name. */
 	@Column
 	private String name;
 	
-	/** The number. */
 	@Column
-	private Long number;
+	private Integer quantity;
 	
-	/** The ownership. */
-	@ManyToOne(targetEntity=Crew.class)
+	@ManyToOne()
 	private Crew ownership;
 	
-	@ManyToOne(optional = false, targetEntity = Location.class)
+	@ManyToOne()
+	private Human human;
+	
+	@ManyToOne(optional = false)
 	private Location location;
 	
 	@Column
 	private Boolean isEquipped;
 
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
+	protected Item() {
+		super();
+	}
+	
+	public Item(String name, int quantity, Location loc) {
+		this.name = name;
+		this.quantity = quantity;
+		this.isEquipped = false;
+		this.location = loc;
+	}
+	
+	protected void hookPreRemove() {
+		if (this.human != null) {
+			this.human.removeItem(this);
+		}
+	}
+	
+	public Human getHuman() {
+		return human;
+	}
+
+	public void setHuman(Human human) {
+		this.human = human;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public Boolean getIsEquipped() {
+		return isEquipped;
+	}
+
+	public void setIsEquipped(Boolean isEquipped) {
+		this.isEquipped = isEquipped;
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Gets the number.
-	 *
-	 * @return the number
-	 */
-	public Long getNumber() {
-		return number;
-	}
-
-	/**
-	 * Sets the number.
-	 *
-	 * @param number the new number
-	 */
-	public void setNumber(Long number) {
-		this.number = number;
-	}
-
-	/**
-	 * Gets the ownership.
-	 *
-	 * @return the ownership
-	 */
 	public Crew getOwnership() {
 		return ownership;
 	}
 
-	/**
-	 * Sets the ownership.
-	 *
-	 * @param ownership the new ownership
-	 */
 	public void setOwnership(Crew ownership) {
 		this.ownership = ownership;
 	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 
 }

@@ -15,5 +15,9 @@ public interface HumanRepository extends CrudRepository<Human, Long> {
 	public List<Human> findByTimeOfReturnBetween(Timestamp start_date, Timestamp end_date);
 	
 	public List<Human> findByTimeOfTurningBetween(Timestamp start_date, Timestamp end_date);
+	
+	public List<Human> findAllByCrewNotNull();
+	
+	public List<Human> findAllByDead(boolean dead);
 
 }

@@ -42,7 +42,7 @@ public class ScheduledTasks {
 		if (cron == null) {
 			cron = new Cron(cronname, cur_timestamp);
 			cronRepository.save(cron);
-			return cur_timestamp;
+			return new Timestamp(0);
 		}
 		else {
 			Timestamp last_execution = cron.getLast_execution();
@@ -71,7 +71,7 @@ public class ScheduledTasks {
 	@Scheduled(cron="0 0 12 * * ?")
 	public void DailyCron() {
 		logCronDate("daily");
-		//TODO call daily cron method such as change_food_level
+		humanService.foodCron();
 	}
 
 	public void runOnceOnlyOnStartup() {

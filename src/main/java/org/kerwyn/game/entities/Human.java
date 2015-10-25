@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,13 +17,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DynamicUpdate;
 import org.kerwyn.game.config.Profession;
 
 
 @Entity
+@DynamicUpdate
 @Table(name = "HUMANS",
 		indexes = {@Index(name = "time_turning_index", columnList = "timeOfTurning", unique = false),
 					@Index(name = "time_job_index", columnList = "timeOfReturn", unique = false)})
+@BatchSize(size=200)
 public class Human extends AbstractEntity {
 
 	@Column(nullable = false)
@@ -46,7 +51,17 @@ public class Human extends AbstractEntity {
 			)
 	private Set<Skill> skills;
 
-	@OneToMany()
+	/***
+	 * Use fetchmode subselect or batchsize to prevent slow performance.
+	 * Batchsize: if we need to select the inventory of 1000 different humans, it will only 
+	 * 			execute 1000/batchsize_size select queries
+	 * Fetchmode subselect: if we need to select inventory of 1000 differents humans, it will
+	 * 			only execute 1 select query but with a subquery containing all the humans id.
+	 * http://www.mkyong.com/hibernate/hibernate-fetching-strategies-examples/ 
+	 */
+	@OneToMany(mappedBy = "human", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+//	@Fetch(FetchMode.SUBSELECT)
+	@BatchSize(size = 200)
 	private Set<Item> inventory;
 
 	@OneToMany()
@@ -57,6 +72,9 @@ public class Human extends AbstractEntity {
 
 	@Column
 	private Integer lastFoodConsume;
+	
+	@Column
+	private Integer nbrDaysWithoutFood;
 
 	@Column
 	private Boolean infected;
@@ -123,6 +141,7 @@ public class Human extends AbstractEntity {
 		this.infected = infected;
 		this.capacity = capacity;
 		this.currentFoodConsume = currentfoodconsume;
+		this.nbrDaysWithoutFood = 0;
 		this.numberInjuryMax = numbermaxinjury;
 		this.healerExp = 0L;
 		this.gunnerExp = 0L;
@@ -159,6 +178,12 @@ public class Human extends AbstractEntity {
 		//prevent modifying skill set if we are deleting entity
 		if (!this.destroy && this.skills.remove(skill))
 			skill.removeHuman(this);
+	}
+	
+	public void removeItem(Item item) {
+		if (!this.destroy && this.inventory.contains(item)) {
+			inventory.remove(item);
+		}
 	}
 
 	protected void hookPreRemove() {
@@ -253,6 +278,14 @@ public class Human extends AbstractEntity {
 
 	public void setLastFoodConsume(Integer lastFoodConsume) {
 		this.lastFoodConsume = lastFoodConsume;
+	}
+
+	public Integer getNbrDaysWithoutFood() {
+		return nbrDaysWithoutFood;
+	}
+
+	public void setNbrDaysWithoutFood(Integer nbrDaysWithoutFood) {
+		this.nbrDaysWithoutFood = nbrDaysWithoutFood;
 	}
 
 	public Boolean getInfected() {

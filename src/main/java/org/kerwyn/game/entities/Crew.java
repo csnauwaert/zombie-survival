@@ -10,16 +10,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+
 
 @Entity
 @Table(name = "CREWS")
+@BatchSize(size=200)
 public class Crew extends AbstractEntity {
 
 	
 	@ManyToOne()
 	private User user;
 
-	@OneToMany(mappedBy = "crew", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "crew", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Human> humans;
 
 	@OneToMany(mappedBy = "crew", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

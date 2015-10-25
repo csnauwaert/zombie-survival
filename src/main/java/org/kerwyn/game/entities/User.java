@@ -40,7 +40,7 @@ public class User extends AbstractEntity {
 	private String pseudo;
 
 	@JsonView(View.UserBasicView.class)
-	@OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Set<Crew> crew;
 
 	/**

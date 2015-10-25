@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
 import org.kerwyn.game.map.Map;
 
 /**
@@ -17,6 +18,7 @@ import org.kerwyn.game.map.Map;
  */
 @Entity
 @Table(name = "LOCATIONS")
+@BatchSize(size=200)
 public class Location extends AbstractEntity {
 
 	/** The coordinate in a format x:y. */

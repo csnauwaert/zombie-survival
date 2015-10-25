@@ -12,10 +12,11 @@ public interface HumanService {
 	public Human create(Crew crew, Location loc);
 	public void delete(Human human);
 	public boolean changeCrew(Human human, Crew crew);
+	public Double getEfficiency(Human human);
+	public void die(Human human);
 	/*
 	 * moveToLocation(Human human, Location loc);
 	 * moveToLocation(Human human, int x, int y);
-	 * gainExp(Human human, String profession, int value);
 	 * killForFood(Human human)
 	 * equipItem(Human human, Item[] items);
 	 * unequipItem(Human human, Item[] items);
@@ -31,4 +32,5 @@ public interface HumanService {
 	//CRON jobs
 	public void checkTurning(Timestamp last_sync);
 	public void checkJobs(Timestamp last_sync);
+	public void foodCron();
 }
